@@ -2,13 +2,12 @@ import { useState, FormEvent } from 'react' // Import FormEvent from 'react'
 import { Button, Input } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
 
-const Form = ({
-	chatName,
-	connection,
-}: {
+interface FormProps {
 	chatName: string | undefined
 	connection: HubConnection | undefined
-}) => {
+}
+
+const Form: React.FC<FormProps> = ({ chatName, connection }) => {
 	const [message, setMessage] = useState('')
 
 	const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {

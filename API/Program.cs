@@ -1,8 +1,12 @@
 using API.Hubs;
+using API.Server;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
+builder.Services.AddDbContext<ChatDB>(options =>
+    options.UseInMemoryDatabase("ChatRooms"));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -15,6 +19,8 @@ builder.Services.AddCors(options =>
         });
 
 });
+builder.Services.AddLogging();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

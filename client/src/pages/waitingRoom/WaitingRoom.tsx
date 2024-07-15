@@ -1,10 +1,11 @@
+import { IJoinChatData } from '../../interfaces/IJoinChatData'
 import Form from './components/Form'
 
-const WaitingRoom = ({
-	JoinChat,
-}: {
-	JoinChat: (chatName: string, name: string) => Promise<void>
-}) => {
+interface WaitingRoom {
+	JoinChat: (joinChatData: IJoinChatData) => Promise<void>
+}
+
+const WaitingRoom: React.FC<WaitingRoom> = ({ JoinChat }) => {
 	return (
 		<div className='w-screen h-screen bg-gray-300 flex justify-center items-center '>
 			<div className='bg-gray-100 shadow-lg w-[500px] h-[300px] p-[40px]'>

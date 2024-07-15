@@ -9,27 +9,34 @@ import {
 	HubConnectionBuilder,
 	LogLevel,
 } from '@microsoft/signalr'
+import { IJoinChatData } from './interfaces/IJoinChatData'
+import { IMessage } from './interfaces/IMessage'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
-	const [chat, setChat] = useState<string[]>([])
+	const [chat, setChat] = useState<IMessage[]>([])
 
-	const JoinChat = async (chatName: string, name: string) => {
+	const JoinChat = async (JoinChatData: IJoinChatData) => {
 		const conn = new HubConnectionBuilder()
 			.withUrl('https://localhost:7181/chatHub')
 			.configureLogging(LogLevel.Information)
 			.withAutomaticReconnect()
 			.build()
 
-		conn.on('ReciveMessage', (msg: string) => {
-			console.log('msg:' + msg)
-			setChat(messages => [...messages, msg])
+		conn.on('ReceiveMessage', (userName, message) => {
+			console.log(userName + ': ' + message)
+			setChat(messages => [
+				...messages,
+				{ Author: userName, Message: message },
+			])
 		})
 
 		try {
 			await conn.start()
-			await conn.invoke('JoinChat', chatName, name)
-			// console.log(conn)
+
+			const { GroupName, Name } = JoinChatData
+			await conn.invoke('JoinChat', { GroupName, Name })
+
 			setConnection(conn)
 		} catch (err) {
 			console.error(
@@ -38,6 +45,7 @@ function App() {
 			)
 		}
 	}
+
 	return (
 		<Routes>
 			<Route path='/' element={<WaitingRoom JoinChat={JoinChat} />} />
