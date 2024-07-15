@@ -1,5 +1,9 @@
 Hello! This is FullStackChatApp!!
 
+Stack:
+Frontend: react + ts + @microsoft/signalr + chakra ui; 
+Backend:c# + asp.net + signalr
+
 For excecute my app you should:
 
 in frontend
