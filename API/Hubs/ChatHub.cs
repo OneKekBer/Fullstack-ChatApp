@@ -44,7 +44,7 @@ namespace API.Hubs
 
             _cache.Set(Context.ConnectionId, userData);
             await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
-
+            
             await Clients.Group(GroupName).ReceiveMessage("Admin", $"{Name} has joined!");
         }
         
