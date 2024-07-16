@@ -2,7 +2,7 @@
 {
     public class ChatGroup
     {
-        public Guid Id { get; set; } = Guid.Empty;
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public List<User> Users { get; set; } = new List<User>();
 

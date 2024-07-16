@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
 
-namespace API.Server
+namespace API.Database
 {
     
     public class ChatDB : DbContext
@@ -13,5 +13,10 @@ namespace API.Server
         { }
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
+
+        public void FindChatGroupById()
+        {
+
+        }
     }
 }

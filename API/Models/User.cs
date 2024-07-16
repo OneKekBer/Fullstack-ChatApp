@@ -2,10 +2,18 @@
 {
     public class User
     {
-        public Guid Id { get; set; } = Guid.Empty;
+        public Guid Id { get; init; } = Guid.NewGuid();
 
-        public string Name { get; set; } = string.Empty;
+        public string Login { get; init; } = string.Empty;
+
+        public string PasswordHash { get; init; } = string.Empty;
 
         public List<Guid> AllGroupsId { get; set; } = new List<Guid>();
+
+        public User(string login, string passwordHash)
+        {
+            Login = login;
+            PasswordHash = passwordHash;
+        }
     }
 }

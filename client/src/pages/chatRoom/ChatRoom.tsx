@@ -1,8 +1,9 @@
 import { HubConnection } from '@microsoft/signalr'
 import { useNavigate, useParams } from 'react-router-dom'
 import Form from './components/Form'
-import Error from '../error/Error'
-import { IMessage } from '../../interfaces/IMessage'
+
+import { IMessage } from 'interfaces/IMessage'
+import Error from 'pages/error/Error'
 
 interface ChatRoomProps {
 	connection: HubConnection | undefined
@@ -49,7 +50,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ connection, chat }) => {
 								<div>there are no messages</div>
 							)}
 						</div>
-						<Form chatName={chatName} connection={connection} />
+						<Form connection={connection} />
 					</div>
 				</div>
 			) : (

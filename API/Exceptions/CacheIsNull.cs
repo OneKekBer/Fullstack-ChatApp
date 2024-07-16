@@ -5,5 +5,4 @@
         public CacheIsNull()
             : base("There are no this user in the cache") { }
     }
-
 }

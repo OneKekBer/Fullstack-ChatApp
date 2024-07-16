@@ -1,13 +1,11 @@
-﻿using API.Exceptions;
+﻿using API.Database;
+using API.Exceptions;
 using API.Server;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Data;
 using System.Xml.Linq;
 using static API.Hubs.ChatHub;
-
-
-
 
 
 namespace API.Hubs
@@ -31,13 +29,13 @@ namespace API.Hubs
             _logger = logger;
         }
 
-        public record UserData(string GroupName, string Name);
+        public record JoinChatDto(string GroupName, string Name);
 
-        public async Task JoinChat(UserData userData)
+        public async Task JoinChat(JoinChatDto userData)
         {
             var (GroupName, Name) = userData;
 
-            _logger.LogInformation("GroupName: " +GroupName);
+            _logger.LogInformation("GroupName: " + GroupName);
 
             if (GroupName == string.Empty || Name == string.Empty)
                 return;
@@ -48,23 +46,24 @@ namespace API.Hubs
             await Clients.Group(GroupName).ReceiveMessage("Admin", $"{Name} has joined!");
         }
         
-        public async Task SendMessage(string chatName, string text)
+
+        public async Task SendMessage(string text)
         {
             Console.WriteLine(text);
 
-            _cache.TryGetValue(Context.ConnectionId, out UserData? userData);
+            _cache.TryGetValue(Context.ConnectionId, out JoinChatDto? userData);
 
             if (userData == null)
                 throw new CacheIsNull();
 
-            await Clients.Group(chatName).ReceiveMessage(userData.Name, text);
-
+            await Clients.Group(userData.GroupName).ReceiveMessage(userData.Name, text);
+                
         }
 
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            _cache.TryGetValue(Context.ConnectionId, out UserData? userData);
+            _cache.TryGetValue(Context.ConnectionId, out JoinChatDto? userData);
 
             if (userData is not null)
             {

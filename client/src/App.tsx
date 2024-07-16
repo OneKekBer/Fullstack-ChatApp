@@ -11,10 +11,13 @@ import {
 } from '@microsoft/signalr'
 import { IJoinChatData } from './interfaces/IJoinChatData'
 import { IMessage } from './interfaces/IMessage'
+import { useAppDispatch } from 'store/hooks'
+import { CreateRoom } from 'store/Chat/RoomSlice'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
 	const [chat, setChat] = useState<IMessage[]>([])
+	const dispatch = useAppDispatch()
 
 	const JoinChat = async (JoinChatData: IJoinChatData) => {
 		const conn = new HubConnectionBuilder()
@@ -36,6 +39,7 @@ function App() {
 
 			const { GroupName, Name } = JoinChatData
 			await conn.invoke('JoinChat', { GroupName, Name })
+			dispatch(CreateRoom(GroupName, null))
 
 			setConnection(conn)
 		} catch (err) {

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import chatReducer from './Chat/ChatSlice'
+import roomReducer from './Chat/RoomSlice'
 
 export const store = configureStore({
 	reducer: {
 		chat: chatReducer,
+		rooms: roomReducer,
 	},
 })
 

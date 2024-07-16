@@ -1,17 +1,16 @@
-import { HubConnection } from '@microsoft/signalr'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { IMessage } from '../../interfaces/IMessage'
 
 // Define a type for the slice state
+
 interface CounterState {
-	chat: string[]
-	connection: HubConnection | null
+	rooms: IMessage[]
 }
 
 // Define the initial state using that type
 const initialState: CounterState = {
-	chat: [],
-	connection: null,
+	rooms: [],
 }
 
 export const chatSlice = createSlice({
@@ -19,9 +18,9 @@ export const chatSlice = createSlice({
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
-		addConnection: (state, action: PayloadAction<HubConnection>) => {
-			state.connection = action.payload
-		},
+		// addConnection: (state, action: PayloadAction<HubConnection>) => {
+		// 	state.connection = action.payload
+		// },
 
 		addMessageInChat: (state, action: PayloadAction<string>) => {
 			state.chat.push(action.payload)

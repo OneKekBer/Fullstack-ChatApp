@@ -3,17 +3,17 @@ import { Button, Input } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
 
 interface FormProps {
-	chatName: string | undefined
+	// chatName: string | undefined
 	connection: HubConnection | undefined
 }
 
-const Form: React.FC<FormProps> = ({ chatName, connection }) => {
+const Form: React.FC<FormProps> = ({ connection }) => {
 	const [message, setMessage] = useState('')
 
 	const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		await connection
-			?.invoke('SendMessage', chatName, message)
+			?.invoke('SendMessage', message)
 			.catch(err => console.log(err))
 		setMessage('')
 	}
@@ -21,7 +21,7 @@ const Form: React.FC<FormProps> = ({ chatName, connection }) => {
 	return (
 		<form
 			onSubmit={handleSubmitForm}
-			className='flex gap-3 flex-col'
+			className='flex flex-col gap-3'
 			action=''
 		>
 			<Input
