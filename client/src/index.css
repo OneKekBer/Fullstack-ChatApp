@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url(https://fonts.googleapis.com/css?family=League+Spartan:100,200,300,regular,500,600,700,800,900);
+@import url(https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:100,300,regular,500,700,800,900);
+
+* {
+	color: #ffff;
+	font-family: 'M PLUS Rounded 1c', 'League Spartan', sans-serif;
+}
+
+.glass {
+	backdrop-filter: blur(19px) saturate(180%);
+	background-color: rgba(0, 0, 0, 0.427);
+	border-radius: 20px;
+}
+
+.bg {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100vw;
+	height: 100vh;
+
+	background-image: url('./../public/bg3.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using API.Exceptions;
+using System.Net;
 using System.Text.Json;
 
 namespace API.Middlewares;
@@ -20,10 +21,31 @@ public class GlobalExceptionHandler
         {
             await _next(httpContext);
         }
+        catch (AuthException ex)
+        {
+            await AuthHandlerException(httpContext, ex);
+        }
         catch (Exception ex)
         {
             await GlobalHandlerException(httpContext, ex);
         }
+    }
+
+    private Task AuthHandlerException(HttpContext context, Exception exception)
+    {
+        _logger.LogError(exception.Message);
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+        var response = new
+        {
+            Error = exception.Message,
+            Message = "Internal Server error"
+        };
+
+        var jsonResponse = JsonSerializer.Serialize(response);
+
+        return context.Response.WriteAsync(jsonResponse);
     }
 
     private Task GlobalHandlerException(HttpContext context, Exception exception)

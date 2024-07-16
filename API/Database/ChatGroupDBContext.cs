@@ -14,9 +14,16 @@ namespace API.Database
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
-        public void FindChatGroupById()
-        {
 
+        
+
+        public ChatGroup FindChatGroupById(Guid id)
+        {
+            var searchingGroup = ChatGroups.FirstOrDefault(x => x.Id == id) ?? throw new NullReferenceException("group is undefind");
+
+            searchingGroup.Messages = searchingGroup.Messages.Take(20).ToList();
+
+            return searchingGroup;
         }
     }
 }

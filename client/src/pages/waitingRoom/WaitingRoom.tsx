@@ -1,25 +1,37 @@
 import { useAppSelector } from 'store/hooks'
-import { IJoinChatData } from '../../interfaces/IJoinChatData'
 
-import Form from './components/Form'
+import { Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
-interface WaitingRoom {
-	JoinChat: (joinChatData: IJoinChatData) => Promise<void>
-}
+interface WaitingRoom {}
 
-const WaitingRoom: React.FC<WaitingRoom> = ({ JoinChat }) => {
+const WaitingRoom: React.FC<WaitingRoom> = () => {
 	const rooms = useAppSelector(state => state.rooms.rooms)
-
+	const navigate = useNavigate()
 	console.log(rooms)
 
 	return (
-		<div className='flex items-center justify-center w-screen h-screen bg-gray-300 '>
-			<div className='bg-gray-100 shadow-lg w-[500px] h-[300px] p-[40px]'>
-				<h1 className='text-[30px] text-center font-semibold mb-5'>
-					Welcome into VIBEr!
-				</h1>
-				<Form JoinChat={JoinChat} />
-				<div>Your last rooms:</div>
+		<div className='bg'>
+			<div className='glass w-[500px] h-[300px] p-[40px]'>
+				<div className='text-center text-[40px]'>Welcome To Viber</div>
+				<div className='flex justify-center gap-2'>
+					<Button
+						size='lg'
+						onClick={() => {
+							navigate('/login')
+						}}
+					>
+						Login
+					</Button>
+					<Button
+						size='lg'
+						onClick={() => {
+							navigate('/register')
+						}}
+					>
+						Register
+					</Button>
+				</div>
 			</div>
 		</div>
 	)

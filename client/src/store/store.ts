@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import chatReducer from './Chat/ChatSlice'
 import roomReducer from './Chat/RoomSlice'
+import userReducer from './User/UserSlice'
 
 export const store = configureStore({
 	reducer: {
-		chat: chatReducer,
 		rooms: roomReducer,
+		user: userReducer,
 	},
+	devTools: true,
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

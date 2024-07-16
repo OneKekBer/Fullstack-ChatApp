@@ -22,7 +22,7 @@ const Form: React.FC<FormProps> = ({ JoinChat }) => {
 	return (
 		<form
 			onSubmit={handleSubmitForm}
-			className='flex gap-3 flex-col'
+			className='flex flex-col gap-3'
 			action=''
 		>
 			<Input
@@ -40,7 +40,7 @@ const Form: React.FC<FormProps> = ({ JoinChat }) => {
 				type='text'
 				size='md'
 			/>
-			<Button type='submit' colorScheme='green'>
+			<Button type='submit' colorScheme='brand'>
 				Submit
 			</Button>
 		</form>

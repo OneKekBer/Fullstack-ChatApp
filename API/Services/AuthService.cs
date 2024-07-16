@@ -1,4 +1,5 @@
-﻿using API.Domains.User.Models;
+﻿using API.Database;
+using API.Domains.User.Models;
 using API.Exceptions;
 using API.Models;
 using API.Server;
@@ -10,11 +11,14 @@ namespace API.Services
 {
     public class AuthService
     {
-        private UsersDB _database { get; init; }
+        private UsersDB _userDatabase { get; init; }
+        private ChatDB _chatDatabase { get; init; }
 
-        public AuthService(UsersDB dataBase)
+
+        public AuthService(UsersDB userDatabase, ChatDB chatDatabase)
         {
-            _database = dataBase;
+            _userDatabase = userDatabase;
+            _chatDatabase = chatDatabase;
         }
 
         private static string ConvertPasswordToHash(string password)
@@ -31,7 +35,7 @@ namespace API.Services
 
         public User LogIn(RegisterDTO registerData)
         {
-            var user = _database.FindUserByLogin(registerData.Login);
+            var user = _userDatabase.FindUserByLogin(registerData.Login);
 
             if (!IsPasswordHashesEquals(user, registerData.Password))
                 throw new IncorrectPasswordException();
@@ -41,12 +45,12 @@ namespace API.Services
 
         public User RegisterUser(RegisterDTO registerData)
         {
-            if (_database.IsLoginExists(registerData.Login))
-                throw new Exception("Login already used");
+            if (_userDatabase.IsLoginExists(registerData.Login))
+                throw new LoginAlreadyUseException();
 
             var createdUser = new User(registerData.Login, ConvertPasswordToHash(registerData.Password));
-            _database.Users.Add(createdUser);
-            _database.SaveChanges();
+            _userDatabase.Users.Add(createdUser);
+            _userDatabase.SaveChanges();
             return createdUser;
         }
     }

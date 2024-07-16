@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
 
 //services
 builder.Services.AddScoped<AuthService>(); // potential error witg scoped!!
-
+builder.Services.AddScoped<ChatGroupsService>(); // potential error witg scoped!!
 
 
 var app = builder.Build();

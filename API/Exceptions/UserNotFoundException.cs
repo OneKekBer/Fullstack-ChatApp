@@ -1,8 +1,8 @@
 ﻿namespace API.Exceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : AuthException
     {
         public UserNotFoundException()
-            : base("User is undefind") { }
+            : base("Login or password are incorrect") { }
     } 
 }

@@ -10,6 +10,8 @@
 
         public List<Guid> AllGroupsId { get; set; } = new List<Guid>();
 
+        public string ConnectionId { get; set; } = string.Empty;
+
         public User(string login, string passwordHash)
         {
             Login = login;

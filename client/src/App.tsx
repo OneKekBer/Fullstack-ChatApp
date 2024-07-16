@@ -14,12 +14,18 @@ import { IMessage } from './interfaces/IMessage'
 import { useAppDispatch } from 'store/hooks'
 import { CreateRoom } from 'store/Chat/RoomSlice'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Register from 'pages/auth/register/Register'
+import Login from 'pages/auth/login/Login'
+import { SetUserIsOffline, SetUserIsOnline } from 'store/User/UserSlice'
+
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
 	const [chat, setChat] = useState<IMessage[]>([])
 	const dispatch = useAppDispatch()
 
-	const JoinChat = async (JoinChatData: IJoinChatData) => {
+	const ConnectToHub = async (Login: string) => {
 		const conn = new HubConnectionBuilder()
 			.withUrl('https://localhost:7181/chatHub')
 			.configureLogging(LogLevel.Information)
@@ -34,13 +40,19 @@ function App() {
 			])
 		})
 
+		conn.on('UserIsOffline', (login: string) => {
+			console.log('user is offline: ' + login)
+			dispatch(SetUserIsOffline(login))
+		})
+
+		conn.on('UserIsOnline', (login: string) => {
+			console.log('user is online: ' + login)
+			dispatch(SetUserIsOnline(login))
+		})
+
 		try {
 			await conn.start()
-
-			const { GroupName, Name } = JoinChatData
-			await conn.invoke('JoinChat', { GroupName, Name })
-			dispatch(CreateRoom(GroupName, null))
-
+			connection?.invoke('Connect', Login)
 			setConnection(conn)
 		} catch (err) {
 			console.error(
@@ -51,15 +63,23 @@ function App() {
 	}
 
 	return (
-		<Routes>
-			<Route path='/' element={<WaitingRoom JoinChat={JoinChat} />} />
-			<Route
-				path='/:chatName'
-				element={<ChatRoom chat={chat} connection={connection} />}
-			/>
-			<Route path='*' element={<Error />} />
-			{/* <Route path='/' element={<WaitingRoom />} /> */}
-		</Routes>
+		<div>
+			<ToastContainer position='top-right' closeOnClick theme='dark' />
+			<Routes>
+				<Route path='/' element={<WaitingRoom />} />
+				<Route
+					path='/login'
+					element={<Login ConnectToHub={ConnectToHub} />}
+				/>
+				<Route path='/register' element={<Register />} />
+				<Route
+					path='/chat'
+					element={<ChatRoom chat={chat} connection={connection} />}
+				/>
+				<Route path='*' element={<Error />} />
+				{/* <Route path='/' element={<WaitingRoom />} /> */}
+			</Routes>
+		</div>
 	)
 }
 
