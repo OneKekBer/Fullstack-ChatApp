@@ -28,7 +28,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ connection, chat }) => {
 						{onlineUsers.map((user, i) => {
 							return (
 								<div key={i}>
-									<div>{user}</div>
+									<div>{user.login}</div>
 								</div>
 							)
 						})}

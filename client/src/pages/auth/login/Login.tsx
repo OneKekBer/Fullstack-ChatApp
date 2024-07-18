@@ -48,6 +48,14 @@ const Login: React.FC<LoginProps> = ({ ConnectToHub }) => {
 				<div>Login</div>
 				<div className='text-red-500'>{messageError}</div>
 				<Form FetchLogin={FetchLogin} />
+				<div
+					className='font-light text-blue-300 underline cursor-pointer'
+					onClick={() => {
+						navigate('/register')
+					}}
+				>
+					you dont have account?
+				</div>
 			</div>
 		</div>
 	)

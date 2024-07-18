@@ -9,16 +9,15 @@ import {
 	HubConnectionBuilder,
 	LogLevel,
 } from '@microsoft/signalr'
-import { IJoinChatData } from './interfaces/IJoinChatData'
+
 import { IMessage } from './interfaces/IMessage'
 import { useAppDispatch } from 'store/hooks'
-import { CreateRoom } from 'store/Chat/RoomSlice'
-
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Register from 'pages/auth/register/Register'
 import Login from 'pages/auth/login/Login'
-import { SetUserIsOffline, SetUserIsOnline } from 'store/User/UserSlice'
+import { SetUserIsOnline } from 'store/User/UserSlice'
+import IConnectUserData from 'interfaces/IConnectUserData'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
@@ -42,17 +41,25 @@ function App() {
 
 		conn.on('UserIsOffline', (login: string) => {
 			console.log('user is offline: ' + login)
-			dispatch(SetUserIsOffline(login))
+			// dispatch(SetUserIsOffline(login))
 		})
 
-		conn.on('UserIsOnline', (login: string) => {
-			console.log('user is online: ' + login)
-			dispatch(SetUserIsOnline(login))
+		conn.on('OnlineUsers', async (onlineUsers: IConnectUserData[]) => {
+			console.log('user is offline: ' + onlineUsers)
+
+			dispatch(SetUserIsOnline(onlineUsers))
+			onlineUsers.forEach(user => {
+				console.log(user)
+				console.log(user.login)
+				console.log(user.connectionId)
+			})
+
+			// console.log('user is online: ' + login)
 		})
 
 		try {
 			await conn.start()
-			connection?.invoke('Connect', Login)
+			await conn?.invoke('Connect', Login)
 			setConnection(conn)
 		} catch (err) {
 			console.error(

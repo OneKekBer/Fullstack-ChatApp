@@ -1,6 +1,8 @@
 ﻿using API.Database;
 using API.Domains.Chat.Models;
+using API.Domains.User.Models;
 using API.Exceptions;
+using API.Models;
 using API.Server;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -9,13 +11,13 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Hubs
 {
+
+    
     public interface IChatClient
     {
         public Task ReceiveMessage(string userName, string message);
 
-        public Task UserIsOnline(string login);
-
-        public Task UserIsOffline(string login);
+        Task OnlineUsers(List<OnlineUserData> users);
     }
 
     public class ChatHub : Hub<IChatClient>
@@ -42,24 +44,31 @@ namespace API.Hubs
             var user = _usersDatabase.FindUserByLogin(login);
 
             user.ConnectionId = Context.ConnectionId;
+            user.Status = UserStatus.Online;
 
-            await Clients.All.UserIsOnline(login);
+            _usersDatabase.Update(user);
+            _usersDatabase.SaveChanges();
+
+            var onlineUsers = _usersDatabase.GetOnlineUsers();
+            var formatedUserData = _usersDatabase.FormatUserDataToOnlineUserData(onlineUsers);
+
+            await Clients.All.OnlineUsers(formatedUserData);    
         }
 
-        public async Task JoinChat(JoinChatDto userData)
-        {
-            var (GroupName, Name) = userData;
+        //public async Task JoinChat(JoinChatDto userData)
+        //{
+        //    var (GroupName, Name) = userData;
 
-            _logger.LogInformation("GroupName: " + GroupName);
+        //    _logger.LogInformation("GroupName: " + GroupName);
 
-            if (GroupName == string.Empty || Name == string.Empty)
-                return;
+        //    if (GroupName == string.Empty || Name == string.Empty)
+        //        return;
 
-            _cache.Set(Context.ConnectionId, userData);
-            await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
-            
-            await Clients.Group(GroupName).ReceiveMessage("Admin", $"{Name} has joined!");
-        }
+        //    _cache.Set(Context.ConnectionId, userData);
+        //    await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
+
+        //    await Clients.Group(GroupName).ReceiveMessage("Admin", $"{Name} has joined!");
+        //}
 
         public async Task SendMessage(string text)
         {
@@ -75,14 +84,20 @@ namespace API.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            _cache.TryGetValue(Context.ConnectionId, out JoinChatDto? userData);
-
-            if (userData is not null)
+            var user = _usersDatabase.FindUserByConnectionId(Context.ConnectionId); 
+            
+            if (user is not null)
             {
-                _cache.Remove(Context.ConnectionId);
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, userData.GroupName);
+                user.ConnectionId = "";
+                user.Status = UserStatus.Offline;
 
-                await Clients.Group(userData.GroupName).ReceiveMessage("Admin", $"{userData.Name} was disconnected!");
+                _usersDatabase.Update(user);
+                _usersDatabase.SaveChanges();
+
+                var onlineUsers = _usersDatabase.GetOnlineUsers();
+                var formatedUserData = _usersDatabase.FormatUserDataToOnlineUserData(onlineUsers);
+
+                await Clients.All.OnlineUsers(formatedUserData);
             }
 
             await base.OnDisconnectedAsync(exception);

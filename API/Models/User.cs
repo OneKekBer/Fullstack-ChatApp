@@ -1,5 +1,10 @@
 ﻿namespace API.Models
 {
+    public enum UserStatus
+    {
+        Online = 0,
+        Offline = 1
+    }
     public class User
     {
         public Guid Id { get; init; } = Guid.NewGuid();
@@ -11,6 +16,8 @@
         public List<Guid> AllGroupsId { get; set; } = new List<Guid>();
 
         public string ConnectionId { get; set; } = string.Empty;
+
+        public UserStatus Status { get; set; } = UserStatus.Offline;
 
         public User(string login, string passwordHash)
         {
