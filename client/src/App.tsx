@@ -18,7 +18,7 @@ import Login from 'pages/auth/login/Login'
 import { SetUserIsOnline } from 'store/User/UserSlice'
 import IConnectUserData from 'interfaces/IConnectUserData'
 import IChat from 'interfaces/IChat'
-import { CreateRoom } from 'store/Chat/RoomSlice'
+import { CreateRoom, SetChats, UpdateChat } from 'store/Chat/RoomSlice'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
@@ -39,6 +39,14 @@ function App() {
 		// 		{ Author: userName, Message: message },
 		// 	])
 		// })
+
+		conn.on('ReceiveChats', (chats: IChat[]) => {
+			dispatch(SetChats(chats))
+		})
+
+		conn.on('UpdateChat', (chat: IChat) => {
+			dispatch(UpdateChat(chat))
+		})
 
 		conn.on('CreateNewChat', (newChat: IChat) => {
 			dispatch(CreateRoom(newChat))
@@ -62,7 +70,7 @@ function App() {
 			await conn?.invoke('Connect', Login)
 			setConnection(conn)
 		} catch (err) {
-			toast.error(err.message)
+			toast.error('something went wrong')
 
 			console.error(
 				'Error while establishing connection or sending message:',

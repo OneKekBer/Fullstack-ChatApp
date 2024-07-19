@@ -14,9 +14,15 @@ namespace API.Hubs
     {
         Task ReceiveMessage(string userName, string message);
 
+        Task ReceiveChats(List<ChatGroup> ChatGroup);
+
+        Task UpdateChat(ChatGroup chatGroup);
+
         Task OnlineUsers(List<OnlineUserData> users);
 
         Task CreateNewChat(ChatGroup chat);
+
+
     }
 
     public class ChatHub : Hub<IChatClient>
@@ -51,6 +57,9 @@ namespace API.Hubs
             var onlineUsers = _usersDatabase.GetOnlineUsers();
             var formatedUserData = _usersDatabase.FormatUserDataToOnlineUserData(onlineUsers);
 
+            var allUserChats = _chatDatabase.GetAllUserChats(user.Login);
+
+            await Clients.Client(user.ConnectionId).ReceiveChats(allUserChats);
             await Clients.All.OnlineUsers(formatedUserData);    
         }
 
@@ -71,7 +80,15 @@ namespace API.Hubs
 
             try
             {
-                var newChat = new ChatGroup(new List<User>() { userOne, userTwo }, new List<Message>() { }, groupName);
+                var newChat = new ChatGroup( // there are was a bug because 
+                    new List<UserSafeData>() 
+                    {
+                        new UserSafeData(userOne.Login, userOne.ConnectionId),
+                        new UserSafeData(userTwo.Login, userTwo.ConnectionId) 
+                    },
+                    new List<Message>() { },
+                    groupName
+                    );
 
                 _logger.LogInformation("chatId: " + newChat.Id);
                 _logger.LogInformation("user one Id " + newChat.Users[0].Id);
@@ -90,31 +107,23 @@ namespace API.Hubs
             }
         }
 
-        //public async Task JoinChat(JoinChatDto userData)
-        //{
-        //    var (GroupName, Name) = userData;
-
-        //    _logger.LogInformation("GroupName: " + GroupName);
-
-        //    if (GroupName == string.Empty || Name == string.Empty)
-        //        return;
-
-        //    _cache.Set(Context.ConnectionId, userData);
-        //    await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
-
-        //    await Clients.Group(GroupName).ReceiveMessage("Admin", $"{Name} has joined!");
-        //}
-
-        public async Task SendMessage(string text)
+        public async Task SendMessage(string authorLogin, string text, string groupName) // question: should I in this situation use records for data?
         {
-            Console.WriteLine(text);
+            // question: should i every time use findByName, findById methods in backend;
+            // or i should from frontend send more buisness data and contain it for exmpl: connectionId, Id and ect 
 
-            _cache.TryGetValue(Context.ConnectionId, out JoinChatDto? userData);
+            var user = _usersDatabase.FindUserByLogin(authorLogin); // like here i want to get connectionId
 
-            if (userData == null)
-                throw new CacheIsNull();
+            var chat = _chatDatabase.FindChatGroupByName(groupName);
 
-            await Clients.Group(userData.GroupName).ReceiveMessage(userData.Name, text);
+            var newMessage = (new Message(new UserSafeData(user.Login, user.ConnectionId), text));
+
+            chat.Messages.Add(newMessage);
+
+            _chatDatabase.Update(chat);
+            _chatDatabase.SaveChanges();
+
+            await Clients.Group(groupName).UpdateChat(chat);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

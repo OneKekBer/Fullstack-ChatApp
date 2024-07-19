@@ -8,58 +8,7 @@ interface CounterState {
 }
 
 const initialState: CounterState = {
-	chats: [
-		// {
-		// 	messages: [
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{
-		// 			author: 'Ilya',
-		// 			message:
-		// 				'hello, hello hello hello hello hello hello hello hello hello hello',
-		// 		},
-		// 		{ author: 'Anton', message: 'hello hello hello hello hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Ilya', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{
-		// 			author: 'Anton',
-		// 			message:
-		// 				'hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello',
-		// 		},
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{
-		// 			author: 'Ilya',
-		// 			message:
-		// 				'hello, hello hello hello hello hello hello hello hello hello hello',
-		// 		},
-		// 		{ author: 'Anton', message: 'hello hello hello hello hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Ilya', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello' },
-		// 		{ author: 'Anton', message: 'hello hello hello hello hello' },
-		// 	],
-		// 	name: 'Anton',
-		// 	users: [],
-		// },
-		// { messages: [], name: 'Ilya', users: [] },
-		// { messages: [], name: '3', users: [] },
-		// { messages: [], name: '4', users: [] },
-		// { messages: [], name: '5', users: [] },
-		// { messages: [], name: '6', users: [] },
-		// { messages: [], name: '7', users: [] },
-		// { messages: [], name: '8', users: [] },
-		// { messages: [], name: '9', users: [] },
-		// { messages: [], name: '10', users: [] },
-		// { messages: [], name: '11', users: [] },
-		// { messages: [], name: '12', users: [] },
-		// { messages: [], name: '13', users: [] },
-		// { messages: [], name: '14', users: [] },
-		// { messages: [], name: '15', users: [] },
-	],
+	chats: [],
 }
 
 export const roomSlice = createSlice({
@@ -77,12 +26,27 @@ export const roomSlice = createSlice({
 		// 	})
 		// 	action.payload.RoomName
 		// },
+
 		CreateRoom: (state, action: PayloadAction<IChat>) => {
 			state.chats.push(action.payload)
+		},
+
+		SetChats: (state, action: PayloadAction<IChat[]>) => {
+			state.chats = []
+			state.chats = action.payload
+		},
+		UpdateChat: (state, action: PayloadAction<IChat>) => {
+			const chatIndex = state.chats.findIndex(
+				chat => chat.name === action.payload.name
+			)
+
+			if (chatIndex !== -1) {
+				state.chats[chatIndex] = action.payload
+			}
 		},
 	},
 })
 
-export const { CreateRoom } = roomSlice.actions
+export const { CreateRoom, UpdateChat, SetChats } = roomSlice.actions
 
 export default roomSlice.reducer

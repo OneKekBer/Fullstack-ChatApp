@@ -36,6 +36,8 @@ namespace API.Server
             return new OnlineUserData(user.Login, user.ConnectionId);
         }
 
+        
+
         public bool IsLoginExists(string login)
         {
             var searchingLogin = Users.FirstOrDefault(user => user.Login == login);

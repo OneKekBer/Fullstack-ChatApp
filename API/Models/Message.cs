@@ -6,17 +6,17 @@ namespace API.Models
     {
         public Message() { }
 
-        public Message(string text, User author)
+        public Message(UserSafeData author, string text)
         {
-            Text = text;
             Author = author;
+            Text = text;
         }
 
         public Guid Id { get; init; } = Guid.NewGuid();
 
         public string Text { get; set; } = string.Empty;
 
-        public User Author { get; set; }
+        public UserSafeData Author { get; set; }
     }
 
 }

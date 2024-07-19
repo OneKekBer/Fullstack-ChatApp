@@ -3,19 +3,23 @@ import { Button, Input } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
 
 import sendIcon from 'public/icons/send/send.png'
+import { useAppSelector } from 'store/hooks'
 
 interface FormProps {
 	// chatName: string | undefined
 	connection: HubConnection | undefined
+	chatName: string
 }
 
-const Form: React.FC<FormProps> = ({ connection }) => {
+const Form: React.FC<FormProps> = ({ connection, chatName }) => {
+	const login = useAppSelector(state => state.user.Login)
 	const [message, setMessage] = useState('')
 
 	const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		console.log(login + ' ' + message + ' ' + chatName)
 		await connection
-			?.invoke('SendMessage', message)
+			?.invoke('SendMessage', login, message, chatName)
 			.catch(err => console.log(err))
 		setMessage('')
 	}

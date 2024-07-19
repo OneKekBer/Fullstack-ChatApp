@@ -6,7 +6,7 @@
         {
         }
 
-        public ChatGroup(List<User> users, List<Message> messages, string name)
+        public ChatGroup(List<UserSafeData> users, List<Message> messages, string name)
         {
             Users = users;
             Messages = messages;
@@ -15,7 +15,7 @@
 
         public Guid Id { get; init; } = Guid.NewGuid();
 
-        public List<User> Users { get; set; } = new List<User>();
+        public List<UserSafeData> Users { get; set; } = new List<UserSafeData>();
 
         public List<Message> Messages { get; set; } = new List<Message>();
 
