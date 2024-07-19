@@ -2,6 +2,8 @@ import { useState, FormEvent } from 'react' // Import FormEvent from 'react'
 import { Button, Input } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
 
+import sendIcon from 'public/icons/send/send.png'
+
 interface FormProps {
 	// chatName: string | undefined
 	connection: HubConnection | undefined
@@ -21,7 +23,7 @@ const Form: React.FC<FormProps> = ({ connection }) => {
 	return (
 		<form
 			onSubmit={handleSubmitForm}
-			className='flex flex-col gap-3'
+			className='grid grid-cols-7 gap-3'
 			action=''
 		>
 			<Input
@@ -30,9 +32,10 @@ const Form: React.FC<FormProps> = ({ connection }) => {
 				onChange={e => setMessage(e.target.value)}
 				type='text'
 				size='md'
+				className='col-span-6'
 			/>
-			<Button type='submit' colorScheme='green'>
-				Submit
+			<Button type='submit' className='col-span-1' colorScheme='blue'>
+				<img className=' h-[30px]' src={sendIcon} alt='' />
 			</Button>
 		</form>
 	)

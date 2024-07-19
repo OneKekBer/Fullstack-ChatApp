@@ -10,18 +10,19 @@ import {
 	LogLevel,
 } from '@microsoft/signalr'
 
-import { IMessage } from './interfaces/IMessage'
 import { useAppDispatch } from 'store/hooks'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Register from 'pages/auth/register/Register'
 import Login from 'pages/auth/login/Login'
 import { SetUserIsOnline } from 'store/User/UserSlice'
 import IConnectUserData from 'interfaces/IConnectUserData'
+import IChat from 'interfaces/IChat'
+import { CreateRoom } from 'store/Chat/RoomSlice'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
-	const [chat, setChat] = useState<IMessage[]>([])
+	// const [chat, setChat] = useState<IMessage[]>([])
 	const dispatch = useAppDispatch()
 
 	const ConnectToHub = async (Login: string) => {
@@ -31,29 +32,28 @@ function App() {
 			.withAutomaticReconnect()
 			.build()
 
-		conn.on('ReceiveMessage', (userName, message) => {
-			console.log(userName + ': ' + message)
-			setChat(messages => [
-				...messages,
-				{ Author: userName, Message: message },
-			])
-		})
+		// conn.on('ReceiveMessage', (userName, message) => {
+		// 	console.log(userName + ': ' + message)
+		// 	setChat(messages => [
+		// 		...messages,
+		// 		{ Author: userName, Message: message },
+		// 	])
+		// })
 
-		conn.on('UserIsOffline', (login: string) => {
-			console.log('user is offline: ' + login)
+		conn.on('CreateNewChat', (newChat: IChat) => {
+			dispatch(CreateRoom(newChat))
+
+			console.log('CreateNewChat: ' + newChat)
+			console.log(newChat.name)
+			newChat.users.map(user => {
+				console.log('user: ' + user)
+				console.log(user.login)
+			})
 			// dispatch(SetUserIsOffline(login))
 		})
 
 		conn.on('OnlineUsers', async (onlineUsers: IConnectUserData[]) => {
-			console.log('user is offline: ' + onlineUsers)
-
 			dispatch(SetUserIsOnline(onlineUsers))
-			onlineUsers.forEach(user => {
-				console.log(user)
-				console.log(user.login)
-				console.log(user.connectionId)
-			})
-
 			// console.log('user is online: ' + login)
 		})
 
@@ -62,6 +62,8 @@ function App() {
 			await conn?.invoke('Connect', Login)
 			setConnection(conn)
 		} catch (err) {
+			toast.error(err.message)
+
 			console.error(
 				'Error while establishing connection or sending message:',
 				err
@@ -71,7 +73,12 @@ function App() {
 
 	return (
 		<div>
-			<ToastContainer position='top-right' closeOnClick theme='dark' />
+			<ToastContainer
+				position='top-right'
+				autoClose={2000}
+				closeOnClick
+				theme='dark'
+			/>
 			<Routes>
 				<Route path='/' element={<WaitingRoom />} />
 				<Route
@@ -81,7 +88,7 @@ function App() {
 				<Route path='/register' element={<Register />} />
 				<Route
 					path='/chat'
-					element={<ChatRoom chat={chat} connection={connection} />}
+					element={<ChatRoom connection={connection} />}
 				/>
 				<Route path='*' element={<Error />} />
 				{/* <Route path='/' element={<WaitingRoom />} /> */}

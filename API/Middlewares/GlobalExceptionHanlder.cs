@@ -1,4 +1,5 @@
-﻿using API.Exceptions;
+﻿using API.Exceptions.Auth.Models;
+using API.Exceptions.ChatUI.Models;
 using System.Net;
 using System.Text.Json;
 
@@ -25,10 +26,31 @@ public class GlobalExceptionHandler
         {
             await AuthHandlerException(httpContext, ex);
         }
+        catch (ChatException ex)
+        {
+            await ChatHandlerException(httpContext, ex);
+        }
         catch (Exception ex)
         {
             await GlobalHandlerException(httpContext, ex);
         }
+    }
+
+    private Task ChatHandlerException(HttpContext context, Exception exception)
+    {
+        _logger.LogError(exception.Message);
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.NoContent;
+
+        var response = new
+        {
+            Error = exception.Message,
+            Message = "No content"
+        };
+
+        var jsonResponse = JsonSerializer.Serialize(response);
+
+        return context.Response.WriteAsync(jsonResponse);
     }
 
     private Task AuthHandlerException(HttpContext context, Exception exception)
@@ -40,7 +62,7 @@ public class GlobalExceptionHandler
         var response = new
         {
             Error = exception.Message,
-            Message = "Internal Server error"
+            Message = "Bad request"
         };
 
         var jsonResponse = JsonSerializer.Serialize(response);

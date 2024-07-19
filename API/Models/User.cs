@@ -7,6 +7,14 @@
     }
     public class User
     {
+        public User() { }
+
+        public User(string login, string passwordHash)
+        {
+            Login = login;
+            PasswordHash = passwordHash;
+        }
+
         public Guid Id { get; init; } = Guid.NewGuid();
 
         public string Login { get; init; } = string.Empty;
@@ -19,10 +27,7 @@
 
         public UserStatus Status { get; set; } = UserStatus.Offline;
 
-        public User(string login, string passwordHash)
-        {
-            Login = login;
-            PasswordHash = passwordHash;
-        }
+
+        
     }
 }

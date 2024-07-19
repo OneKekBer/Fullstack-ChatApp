@@ -2,22 +2,21 @@
 using API.Domains.Chat.Models;
 using API.Domains.User.Models;
 using API.Exceptions;
+using API.Exceptions.Auth;
 using API.Models;
 using API.Server;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 
-
-
 namespace API.Hubs
 {
-
-    
     public interface IChatClient
     {
-        public Task ReceiveMessage(string userName, string message);
+        Task ReceiveMessage(string userName, string message);
 
         Task OnlineUsers(List<OnlineUserData> users);
+
+        Task CreateNewChat(ChatGroup chat);
     }
 
     public class ChatHub : Hub<IChatClient>
@@ -53,6 +52,42 @@ namespace API.Hubs
             var formatedUserData = _usersDatabase.FormatUserDataToOnlineUserData(onlineUsers);
 
             await Clients.All.OnlineUsers(formatedUserData);    
+        }
+
+        public async Task CreateGroup(string userTwoConnectionId) //text somebody
+        {
+            var userOne = _usersDatabase.FindUserByConnectionId(Context.ConnectionId);
+            var userTwo = _usersDatabase.FindUserByConnectionId(userTwoConnectionId);
+
+            string groupName = $"{userOne.Login}-{userTwo.Login}";
+
+            await Groups.AddToGroupAsync(userTwoConnectionId, groupName);
+            await Groups.AddToGroupAsync(userOne.ConnectionId, groupName);
+
+            var isChatExists = _chatDatabase.IsChatExists(userOne.Login, userTwo.Login);
+
+            if (isChatExists)
+                throw new Exception("chat already exists");
+
+            try
+            {
+                var newChat = new ChatGroup(new List<User>() { userOne, userTwo }, new List<Message>() { }, groupName);
+
+                _logger.LogInformation("chatId: " + newChat.Id);
+                _logger.LogInformation("user one Id " + newChat.Users[0].Id);
+                _logger.LogInformation("user two Id " + newChat.Users[1].Id);
+
+
+                _chatDatabase.ChatGroups.Add(newChat);
+                _chatDatabase.SaveChanges();
+
+                await Clients.Group(groupName).CreateNewChat(newChat);
+
+            }
+            catch(Exception ex) 
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         //public async Task JoinChat(JoinChatDto userData)
@@ -98,7 +133,7 @@ namespace API.Hubs
                 var formatedUserData = _usersDatabase.FormatUserDataToOnlineUserData(onlineUsers);
 
                 await Clients.All.OnlineUsers(formatedUserData);
-            }
+            }   
 
             await base.OnDisconnectedAsync(exception);
         }

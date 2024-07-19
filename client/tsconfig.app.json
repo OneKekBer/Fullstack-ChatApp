@@ -27,6 +27,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"interfaces/*": ["src/interfaces/*"],
+			"public/*": ["public/*"],
 			"store/*": ["src/store/*"],
 			"pages/*": ["src/pages/*"]
 		}

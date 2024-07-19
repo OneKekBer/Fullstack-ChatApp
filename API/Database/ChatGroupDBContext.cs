@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-
 namespace API.Database
 {
-    
     public class ChatDB : DbContext
     {
         public ChatDB(DbContextOptions<ChatDB> options)
@@ -14,8 +12,16 @@ namespace API.Database
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
+        public bool IsChatExists(string userOneLogin, string userTwoLogin)
+        {
+            var chat = ChatGroups.FirstOrDefault(x =>
+                x.Users.Any(u => u.Login == userOneLogin) 
+                &&
+                x.Users.Any(u => u.Login == userTwoLogin)
+            );
 
-        
+            return chat != null;
+        }
 
         public ChatGroup FindChatGroupById(Guid id)
         {

@@ -10,7 +10,20 @@ interface CounterState {
 // Define the initial state using that type
 const initialState: CounterState = {
 	Login: '',
-	OnlineUsers: [],
+	OnlineUsers: [
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+		// { login: 'hi', connectionId: 'q4dada' },
+	],
 }
 
 export const userSlice = createSlice({
@@ -26,7 +39,9 @@ export const userSlice = createSlice({
 
 		SetUserIsOnline: (state, action: PayloadAction<IConnectUserData[]>) => {
 			state.OnlineUsers = []
-			state.OnlineUsers = action.payload
+			state.OnlineUsers = action.payload.filter(
+				user => user.login !== state.Login
+			)
 		},
 		// SetUserIsOffline: (state, action: PayloadAction<string>) => {
 		// 	state.OnlineUsers = state.OnlineUsers.filter(

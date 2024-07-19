@@ -1,6 +1,7 @@
 ﻿using API.Database;
 using API.Domains.User.Models;
 using API.Exceptions;
+using API.Exceptions.Auth;
 using API.Models;
 using API.Server;
 using System.Security.Cryptography;
@@ -21,7 +22,7 @@ namespace API.Services
             _chatDatabase = chatDatabase;
         }
 
-        private static string ConvertPasswordToHash(string password)
+        public static string ConvertPasswordToHash(string password)
         {
             return Encoding.UTF8.GetString(SHA256.HashData(Encoding.UTF8.GetBytes(password)));
         }
@@ -38,7 +39,7 @@ namespace API.Services
             var user = _userDatabase.FindUserByLogin(registerData.Login);
 
             if (!IsPasswordHashesEquals(user, registerData.Password))
-                throw new IncorrectPasswordException();
+                throw new IncorrectCredentials();
 
             return user;
         }

@@ -24,8 +24,18 @@
 	width: 100vw;
 	height: 100vh;
 
-	background-image: url('./../public/bg3.jpg');
+	background-image: url('./../public/bg3.webp');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+}
+
+.divHideScroll::-webkit-scrollbar {
+	width: 0 !important;
+}
+.divHideScroll {
+	overflow: -moz-scrollbars-none;
+}
+.divHideScroll {
+	-ms-overflow-style: none;
 }

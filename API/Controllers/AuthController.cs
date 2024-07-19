@@ -1,6 +1,7 @@
 ﻿using API.Database;
 using API.Domains.User.Models;
-using API.Exceptions;
+using API.Exceptions.Auth;
+using API.Models;
 using API.Server;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,17 @@ namespace EmptyAspMvcAuth.Controllers
             _authService = authService;
             _logger = logger;
             _groupService = groupService;
+            AddNewUser();
+        }
+
+        public void AddNewUser()
+        {
+            _userDatabase.Users.Add(new User("vital", AuthService.ConvertPasswordToHash("228")));
+            _userDatabase.Users.Add(new User("ilya", AuthService.ConvertPasswordToHash("228")));
+            _userDatabase.Users.Add(new User("anton", AuthService.ConvertPasswordToHash("228")));
+            _userDatabase.Users.Add(new User("valera", AuthService.ConvertPasswordToHash("228")));
+
+            _userDatabase.SaveChanges();
         }
 
         // in the future only admin can invoke this request
@@ -41,7 +53,7 @@ namespace EmptyAspMvcAuth.Controllers
         public ActionResult Register([FromBody] RegisterDTO registerData)
         {
             if (registerData.Password == string.Empty || registerData.Login == string.Empty)
-                throw new AuthException("Login or password can't be empty");
+                throw new IncorrectCredentials();
 
             _authService.RegisterUser(registerData);
 
@@ -52,7 +64,7 @@ namespace EmptyAspMvcAuth.Controllers
         public ActionResult Login([FromBody] RegisterDTO registerData)
         {
             if (registerData.Password == "" || registerData.Login == "")
-                throw new AuthException("Login or password can`t be empty");
+                throw new IncorrectCredentials();
 
             var existingUser = _authService.LogIn(registerData);
 

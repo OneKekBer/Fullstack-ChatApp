@@ -1,4 +1,6 @@
-﻿namespace API.Exceptions
+﻿using API.Exceptions.Auth.Models;
+
+namespace API.Exceptions.Auth
 {
     public class LoginAlreadyUseException : AuthException
     {

@@ -1,16 +1,22 @@
-﻿namespace API.Models
+﻿
+
+namespace API.Models
 {
     public class Message
     {
-        public Message(string text, User user)
+        public Message() { }
+
+        public Message(string text, User author)
         {
             Text = text;
-            User = user;
+            Author = author;
         }
+
+        public Guid Id { get; init; } = Guid.NewGuid();
 
         public string Text { get; set; } = string.Empty;
 
-        public User User { get; set; }
+        public User Author { get; set; }
     }
 
 }

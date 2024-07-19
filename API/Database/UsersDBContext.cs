@@ -1,7 +1,9 @@
 ﻿using API.Database;
 using API.Domains.User.Models;
 using API.Exceptions;
+using API.Exceptions.Auth;
 using API.Models;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Server
@@ -10,7 +12,8 @@ namespace API.Server
     {
         public UsersDB(DbContextOptions<UsersDB> options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<User> Users { get; set; }
 
@@ -26,6 +29,11 @@ namespace API.Server
             return onlineUsers
                 .Select(u => new OnlineUserData(u.Login, u.ConnectionId))
                 .ToList();
+        }
+
+        public OnlineUserData FormatUserDataToOnlineUserData(User user)
+        {
+            return new OnlineUserData(user.Login, user.ConnectionId);
         }
 
         public bool IsLoginExists(string login)
