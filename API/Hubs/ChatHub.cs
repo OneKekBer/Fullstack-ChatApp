@@ -110,7 +110,7 @@ namespace API.Hubs
         public async Task SendMessage(string authorLogin, string text, string groupName) // question: should I in this situation use records for data?
         {
             // question: should i every time use findByName, findById methods in backend;
-            // or i should from frontend send more buisness data and contain it for exmpl: connectionId, Id and ect 
+            // or i should from frontend send more buisness data and contain it for exmpl: connectionId, Id and ect ..
 
             var user = _usersDatabase.FindUserByLogin(authorLogin); // like here i want to get connectionId
 
