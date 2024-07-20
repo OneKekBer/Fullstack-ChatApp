@@ -1,11 +1,11 @@
 Hello! This is FullStackChatApp!!
 
-Stack:
+Stack:<br/>
 Frontend: react + ts + @microsoft/signalr + chakra ui; <br/>
 Backend:c# + asp.net + signalr
 
 For excecute my app you should:
-
+<hr/>
 in frontend
 1. run command: yarn
 2. run command: yarn dev
