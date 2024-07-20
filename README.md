@@ -1,52 +1,21 @@
-FullStackChatApp
-FullStackChatApp is a real-time chat application that allows users to communicate with people around the world.
-Tech Stack
-Frontend
+<h1>Hello! This is FullStackChatApp!!</h1>
 
-React
-TypeScript
-@microsoft/signalr
-Chakra UI
+Stack:<br/>
+Frontend: react + ts + @microsoft/signalr + chakra ui; <br/>
+Backend:c# + asp.net + signalr
 
-Backend
+For excecute my app you should:
+<li>
+  
+</li>
+in frontend
+1. run command: yarn
+2. run command: yarn dev
+3. Then on the website enter your name and chat key and enjoy of communicating with other people around the world!!
+4. enjoy
 
-C#
-ASP.NET
-SignalR
+in backend 
+1. just excecute program!
 
-Getting Started
-Follow these instructions to get the FullStackChatApp up and running on your local machine.
-Frontend Setup
-
-Navigate to the frontend directory:
-Copycd path/to/frontend
-
-Install dependencies:
-Copyyarn
-
-Start the development server:
-Copyyarn dev
-
-Open your web browser and go to the provided localhost URL (typically http://localhost:3000).
-Enter your name and chat key on the website to start communicating with other users.
-
-Backend Setup
-
-Navigate to the backend directory:
-Copycd path/to/backend
-
-Run the program using your preferred method (e.g., through Visual Studio or using the dotnet CLI).
-
-Usage
-Once both the frontend and backend are running:
-
-Open the web application in your browser.
-Enter your name and chat key.
-Start chatting with other users from around the world!
-
-Contributing
-If you'd like to contribute to this project, please create an issue or submit a pull request.
-License
-[Add your chosen license here]
-Contact
-[Add your contact information or link to your profile]
+u welcome !
+ its readme.md do it better
