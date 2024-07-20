@@ -1,8 +1,8 @@
 <h1>Hello! This is FullStackChatApp!!</h1>
 
 Stack:<br/>
-Frontend: react + ts + @microsoft/signalr + chakra ui; <br/>
-Backend: c# + asp.net + signalr
+Frontend: ts + react + @microsoft/signalr + chakra ui + tailwindcss; <br/>
+Backend: c# + asp.net + signalr + EF in memory
 
 For excecute my app you should:
 
