@@ -15,6 +15,10 @@ namespace API.Database
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
+        //there is bug
+        //i cant update chat because 
+        //database cant find this entity for update 
+        //and i dont know what to do(
         public void UpdateChat(ChatGroup chatGroup)
         {
             var oldChat = ChatGroups.FirstOrDefault(x => x.Name == chatGroup.Name);
