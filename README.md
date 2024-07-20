@@ -1,6 +1,6 @@
 <h1>Hello! This is FullStackChatApp!!</h1>
 
-<h2>Stack:</h2><br/>
+<h3>Stack:</h3><br/>
 <h3>Frontend:</h3> react + ts + @microsoft/signalr + chakra ui; <br/>
 <h3>Backend:</h3> c# + asp.net + signalr
 
