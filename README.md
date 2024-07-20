@@ -1,8 +1,8 @@
 <h1>Hello! This is FullStackChatApp!!</h1>
 
-Stack:<br/>
-Frontend: react + ts + @microsoft/signalr + chakra ui; <br/>
-Backend:c# + asp.net + signalr
+<h2>Stack:</h2><br/>
+<h3>Frontend:</h3> react + ts + @microsoft/signalr + chakra ui; <br/>
+<h3>Backend:</h3> c# + asp.net + signalr
 
 For excecute my app you should:
 <li>
