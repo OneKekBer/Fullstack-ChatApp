@@ -23,14 +23,15 @@ namespace API.Database
         {
             var oldChat = ChatGroups.FirstOrDefault(x => x.Name == chatGroup.Name);
 
-            if (oldChat != null)
-            {
-                oldChat.Messages = chatGroup.Messages;
-                var contains = ChatGroups.Contains(oldChat);
-                Console.WriteLine($"contains?: {contains}");
-                Update(oldChat);
-                SaveChanges();
-            }
+            if (oldChat == null)
+                throw new Exception("chat is null");
+            
+            oldChat.Messages = chatGroup.Messages;
+            var contains = ChatGroups.Contains(oldChat);
+            Console.WriteLine($"contains?: {contains}");
+            Update(oldChat);
+            SaveChanges();
+            
         }
 
         public List<ChatGroup> GetAllUserChats(string login)
