@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Server;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace API.Database
@@ -9,11 +10,24 @@ namespace API.Database
     {
         public ChatDB(DbContextOptions<ChatDB> options)
             : base(options)
-        { }
+        { 
+        }
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
+        public void UpdateChat(ChatGroup chatGroup)
+        {
+            var oldChat = ChatGroups.FirstOrDefault(x => x.Name == chatGroup.Name);
 
+            if (oldChat != null)
+            {
+                oldChat.Messages = chatGroup.Messages;
+                var contains = ChatGroups.Contains(oldChat);
+                Console.WriteLine($"contains?: {contains}");
+                Update(oldChat);
+                SaveChanges();
+            }
+        }
 
         public List<ChatGroup> GetAllUserChats(string login)
         {

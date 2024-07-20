@@ -88,14 +88,14 @@ namespace API.Hubs
                     },
                     new List<Message>() { },
                     groupName
-                    );
+                );
 
-                _logger.LogInformation("chatId: " + newChat.Id);
-                _logger.LogInformation("user one Id " + newChat.Users[0].Id);
-                _logger.LogInformation("user two Id " + newChat.Users[1].Id);
+                //_logger.LogInformation("chatId: " + newChat.Id);
+                //_logger.LogInformation("user one Id " + newChat.Users[0].Id);
+                //_logger.LogInformation("user two Id " + newChat.Users[1].Id);
 
 
-                _chatDatabase.ChatGroups.Add(newChat);
+                _chatDatabase..Add(newChat);
                 _chatDatabase.SaveChanges();
 
                 await Clients.Group(groupName).CreateNewChat(newChat);
@@ -116,11 +116,11 @@ namespace API.Hubs
 
             var chat = _chatDatabase.FindChatGroupByName(groupName);
 
-            var newMessage = (new Message(new UserSafeData(user.Login, user.ConnectionId), text));
+            var newMessage = new Message(new UserSafeData(user.Login, user.ConnectionId), text);
 
             chat.Messages.Add(newMessage);
 
-            _chatDatabase.Update(chat);
+            _chatDatabase.UpdateChat(chat);
             _chatDatabase.SaveChanges();
 
             await Clients.Group(groupName).UpdateChat(chat);
