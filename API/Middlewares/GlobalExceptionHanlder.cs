@@ -1,6 +1,4 @@
-﻿using API.Exceptions.Auth.Models;
-using API.Exceptions.ChatUI.Models;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 
 namespace API.Middlewares;
@@ -21,14 +19,6 @@ public class GlobalExceptionHandler
         try
         {
             await _next(httpContext);
-        }
-        catch (AuthException ex)
-        {
-            await AuthHandlerException(httpContext, ex);
-        }
-        catch (ChatException ex)
-        {
-            await ChatHandlerException(httpContext, ex);
         }
         catch (Exception ex)
         {

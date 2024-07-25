@@ -1,57 +1,38 @@
-﻿using API.Database;
-using API.Domains.User.Models;
-using API.Exceptions;
-using API.Exceptions.Auth;
+﻿using API.Domains.User.Models;
 using API.Models;
+using API.Repository;
 using API.Server;
-using System.Security.Cryptography;
-using System.Text;
+using Infrastructure.Helpers;
 
 
 namespace API.Services
 {
     public class AuthService
     {
-        private UsersDB _userDatabase { get; init; }
-        private ChatDB _chatDatabase { get; init; }
+        private UserRepository _userRepository { get; init; }
 
-
-        public AuthService(UsersDB userDatabase, ChatDB chatDatabase)
+        public AuthService(UserRepository UserRepository)
         {
-            _userDatabase = userDatabase;
-            _chatDatabase = chatDatabase;
+            _userRepository = UserRepository;
         }
 
-        public static string ConvertPasswordToHash(string password)
+        public async Task<User> LogIn(RegisterDTO registerData)
         {
-            return Encoding.UTF8.GetString(SHA256.HashData(Encoding.UTF8.GetBytes(password)));
-        }
+            var user = await _userRepository.GetByLogin(registerData.Login);
 
-        private static bool IsPasswordHashesEquals(User user, string incomePassword)
-        {
-            if (user.PasswordHash == ConvertPasswordToHash(incomePassword))
-                return true; // Don't forget about spaces between code-blocks
-            return false;
-        }
-
-        public User LogIn(RegisterDTO registerData)
-        {
-            var user = _userDatabase.FindUserByLogin(registerData.Login);
-
-            if (!IsPasswordHashesEquals(user, registerData.Password))
-                throw new IncorrectCredentials();
+            if (!HashHelper.IsPasswordHashesEquals(user.PasswordHash, registerData.Password))
+                throw new Exception();
 
             return user;
         }
 
-        public User RegisterUser(RegisterDTO registerData)
+        public async Task<User> RegisterUser(RegisterDTO registerData)
         {
-            if (_userDatabase.IsLoginExists(registerData.Login))
-                throw new LoginAlreadyUseException();
+            if (await _userRepository.IsLoginExists(registerData.Login))
+                throw new Exception();
 
-            var createdUser = new User(registerData.Login, ConvertPasswordToHash(registerData.Password));
-            _userDatabase.Users.Add(createdUser);
-            _userDatabase.SaveChanges();
+            var createdUser = new User(registerData.Login, HashHelper.ConvertPasswordToHash(registerData.Password));
+            await _userRepository.Add(createdUser);
             return createdUser;
         }
     }

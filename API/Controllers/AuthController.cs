@@ -1,9 +1,9 @@
 ﻿using API.Database;
 using API.Domains.User.Models;
-using API.Exceptions.Auth;
 using API.Models;
-using API.Server;
+using API.Repository;
 using API.Services;
+using Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,63 +14,52 @@ namespace EmptyAspMvcAuth.Controllers
     [Route("api/auth/")]
     public class AuthController : Controller
     {
-        private readonly UsersDB _userDatabase;
-        private readonly ChatDB _chatDatabase;
-
-        private readonly ChatGroupsService _groupService;
+        private readonly UserRepository _userRepository;
         private readonly AuthService _authService;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(UsersDB db, ChatDB chatDatabase, AuthService authService, ILogger<AuthController> logger, ChatGroupsService groupService)
+        public AuthController(AuthService authService, UserRepository userRepository, ILogger<AuthController> logger)
         {
-            _userDatabase = db;
-            _chatDatabase = chatDatabase;
+            _userRepository = userRepository;
             _authService = authService;
             _logger = logger;
-            _groupService = groupService;
             AddNewUser();
         }
 
-        public void AddNewUser()
+        public async Task AddNewUser()
         {
-            _userDatabase.Users.Add(new User("vital", AuthService.ConvertPasswordToHash("228")));
-            _userDatabase.Users.Add(new User("ilya", AuthService.ConvertPasswordToHash("228")));
-            _userDatabase.Users.Add(new User("anton", AuthService.ConvertPasswordToHash("228")));
-            _userDatabase.Users.Add(new User("valera", AuthService.ConvertPasswordToHash("228")));
-
-            _userDatabase.SaveChanges();
-        }
-
-        // in the future only admin can invoke this request
-        [HttpGet("getAll")]
-        public ActionResult GetAll()
-        {
-            _logger.LogInformation("getAll works");
-            return Ok(_userDatabase.Users);
+            await _userRepository.Add(new User("vital", HashHelper.ConvertPasswordToHash("228")));
+            await _userRepository.Add(new User("ilya", HashHelper.ConvertPasswordToHash("228")));
+            await _userRepository.Add(new User("anton", HashHelper.ConvertPasswordToHash("228")));
+            await _userRepository.Add(new User("valera", HashHelper.ConvertPasswordToHash("228")));
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromBody] RegisterDTO registerData)
+        public async Task<ActionResult> Register([FromBody] RegisterDTO registerData)
         {
             if (registerData.Password == string.Empty || registerData.Login == string.Empty)
-                throw new IncorrectCredentials();
+                return BadRequest(new
+                {
+                    Message = "Password or login are empty"
+                });
 
-            _authService.RegisterUser(registerData);
+            await _authService.RegisterUser(registerData);
 
             return Ok(new { message = "User created successfully" });
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody] RegisterDTO registerData)
+        public async Task<ActionResult> Login([FromBody] RegisterDTO registerData)
         {
             if (registerData.Password == "" || registerData.Login == "")
-                throw new IncorrectCredentials();
+                return BadRequest(new
+                {
+                    Message = "Password or login are empty"
+                });
 
-            var existingUser = _authService.LogIn(registerData);
+            var existingUser = await _authService.LogIn(registerData);
 
-            var userData = _groupService.GetUserGroups(existingUser); //all messages and all groups
-
-            return Ok(userData);
+            return Ok();
         }
     }
 }

@@ -1,22 +1,26 @@
-﻿
-
-namespace API.Models
+﻿namespace API.Models
 {
     public class Message
     {
         public Message() { }
 
-        public Message(UserSafeData author, string text)
+        public Message(Guid authorId, Guid chatId, string text)
         {
-            Author = author;
+            AuthorId = authorId;
+            ChatId = chatId;
             Text = text;
+            CreatedAt = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds(); // get current unix time
         }
 
         public Guid Id { get; init; } = Guid.NewGuid();
 
+        public Guid ChatId { get; init; }
+
+        public Guid AuthorId { get; set; }
+
         public string Text { get; set; } = string.Empty;
 
-        public UserSafeData Author { get; set; }
+        public long CreatedAt { get; init; }
     }
 
 }

@@ -1,6 +1,7 @@
 using API.Database;
 using API.Hubs;
 using API.Middlewares;
+using API.Repository;
 using API.Server;
 using API.Services;
 using EmptyAspMvcAuth.Controllers;
@@ -14,9 +15,9 @@ builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
 //db
-builder.Services.AddDbContext<ChatDB>(options =>
+builder.Services.AddDbContext<ChatDatabase>(options =>
     options.UseInMemoryDatabase("ChatRooms"));
-builder.Services.AddDbContext<UsersDB>(options =>
+builder.Services.AddDbContext<UsersDatabase>(options =>
     options.UseInMemoryDatabase("Users"));
 
 //cors
@@ -34,8 +35,10 @@ builder.Services.AddCors(options =>
 });
 
 //services
+builder.Services.AddScoped<UserRepository>();
+
 builder.Services.AddScoped<AuthService>(); // potential error witg scoped!!
-builder.Services.AddScoped<ChatGroupsService>(); // potential error witg scoped!!
+
 
 
 var app = builder.Build();
