@@ -4,6 +4,10 @@ namespace API.Repository
 {
     public interface IChatRepository : IRepository<Chat>
     {
-        public Task GetUserGroupsByLogin(string login);
+        public Task<List<Chat>> GetUserChats(Guid id);
+
+        public Task AddConnectionIdToChat(Chat chat, string ConnectionId);
+
+        public Task RemoveConnectionIdInAllChats(string connectionId);
     }
 }

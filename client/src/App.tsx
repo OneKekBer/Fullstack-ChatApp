@@ -19,11 +19,17 @@ import { SetUserIsOnline } from 'store/User/UserSlice'
 import IConnectUserData from 'interfaces/IConnectUserData'
 import IChat from 'interfaces/IChat'
 import { CreateRoom, SetChats, UpdateChat } from 'store/Chat/RoomSlice'
+import SearchChatPopup from 'common/popups/SearchChatPopup'
 
 function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
-	// const [chat, setChat] = useState<IMessage[]>([])
+	const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false)
+
 	const dispatch = useAppDispatch()
+
+	const toggleSearchPopup = () => {
+		setIsSearchPopupOpen(prev => !prev)
+	}
 
 	const ConnectToHub = async (Login: string) => {
 		const conn = new HubConnectionBuilder()
@@ -31,14 +37,6 @@ function App() {
 			.configureLogging(LogLevel.Information)
 			.withAutomaticReconnect()
 			.build()
-
-		// conn.on('ReceiveMessage', (userName, message) => {
-		// 	console.log(userName + ': ' + message)
-		// 	setChat(messages => [
-		// 		...messages,
-		// 		{ Author: userName, Message: message },
-		// 	])
-		// })
 
 		conn.on('ReceiveChats', (chats: IChat[]) => {
 			dispatch(SetChats(chats))
@@ -81,6 +79,10 @@ function App() {
 
 	return (
 		<div>
+			<SearchChatPopup
+				isSearchPopupOpen={isSearchPopupOpen}
+				toggleSearchPopup={toggleSearchPopup}
+			/>
 			<ToastContainer
 				position='top-right'
 				autoClose={2000}
@@ -96,7 +98,12 @@ function App() {
 				<Route path='/register' element={<Register />} />
 				<Route
 					path='/chat'
-					element={<ChatRoom connection={connection} />}
+					element={
+						<ChatRoom
+							toggleSearchPopup={toggleSearchPopup}
+							connection={connection}
+						/>
+					}
 				/>
 				<Route path='*' element={<Error />} />
 				{/* <Route path='/' element={<WaitingRoom />} /> */}

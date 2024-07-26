@@ -26,15 +26,37 @@ namespace API.Repository
             var searchingGroup = await _chatsDatabase.Chats.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
 
             return searchingGroup;
-
         }
 
-        public Task GetUserGroupsByLogin(string login)
+        public async Task AddConnectionIdToChat(Chat chat, string ConnectionId) // Question: is it correct ?? should i find by id chat and then use it in method
         {
-            throw new NotImplementedException();
+            chat.ConnectionId.Add(ConnectionId);
+            _chatsDatabase.Update(chat);
+
+            await _chatsDatabase.SaveChangesAsync();
         }
 
-        public Task RemoveById(Guid id)
+        public async Task RemoveConnectionIdInAllChats(string connectionId) // Warning: maybe there will be bug, honestly idk))
+        {
+            var chats = await _chatsDatabase.Chats.Where(x=> x.ConnectionId.Contains(connectionId)).ToListAsync();
+
+            foreach (Chat chat in chats)
+            {
+                chat.ConnectionId.Remove(connectionId);
+                _chatsDatabase.Update(chat);
+            }
+
+            await _chatsDatabase.SaveChangesAsync();
+        }
+
+        public async Task<List<Chat>> GetUserChats(Guid id)
+        {
+            var chats = await _chatsDatabase.Chats.Where(x => x.UsersId.Contains(id)).ToListAsync();  
+
+            return chats;
+        }
+
+        public Task Remove(Chat entity)
         {
             throw new NotImplementedException();
         }

@@ -30,6 +30,19 @@
 	background-size: cover;
 }
 
+.popup__main {
+	z-index: 1001;
+}
+.popup__bg {
+	position: absolute;
+	inset: 0;
+	z-index: 1000;
+	background-color: rgba(148, 148, 148, 0.426);
+
+	justify-content: center;
+	align-items: center;
+}
+
 .divHideScroll::-webkit-scrollbar {
 	width: 0 !important;
 }

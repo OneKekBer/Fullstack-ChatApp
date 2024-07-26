@@ -28,7 +28,7 @@ namespace API.Repository
             return user;
         }
 
-        public async Task RemoveById(Guid id)
+        public async Task Remove(User entity)
         {
             throw new NotImplementedException();
         }

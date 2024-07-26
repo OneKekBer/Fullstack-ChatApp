@@ -28,7 +28,7 @@ public class GlobalExceptionHandler
 
     private Task ChatHandlerException(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception.Message);
+        _logger.LogError(exception.Message);    
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.NoContent;
 

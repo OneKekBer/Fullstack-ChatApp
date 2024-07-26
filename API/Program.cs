@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 builder.Services.AddLogging();
-builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
 //db
@@ -19,6 +18,8 @@ builder.Services.AddDbContext<ChatDatabase>(options =>
     options.UseInMemoryDatabase("ChatRooms"));
 builder.Services.AddDbContext<UsersDatabase>(options =>
     options.UseInMemoryDatabase("Users"));
+builder.Services.AddDbContext<MessagesDatabase>(options =>
+    options.UseInMemoryDatabase("Messages"));
 
 //cors
 builder.Services.AddCors(options =>
@@ -36,10 +37,11 @@ builder.Services.AddCors(options =>
 
 //services
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<MessageRepository>();
+builder.Services.AddScoped<ChatRepository>();
 
 builder.Services.AddScoped<AuthService>(); // potential error witg scoped!!
-
-
+builder.Services.AddScoped<ChatService>(); // potential error witg scoped!!
 
 var app = builder.Build();
 

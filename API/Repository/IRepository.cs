@@ -4,9 +4,9 @@ namespace API.Repository
 {
     public interface IRepository<T> where T : class
     {
-        public Task Add(T entiy);
+        public Task Add(T entity);
 
-        public Task RemoveById(Guid id);
+        public Task Remove(T entity);
 
         public Task<T> GetById(Guid id);
     }

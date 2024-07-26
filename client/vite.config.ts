@@ -9,6 +9,7 @@ export default defineConfig({
 		alias: {
 			interfaces: path.resolve(__dirname, 'src/interfaces'),
 			store: path.resolve(__dirname, 'src/store'),
+			common: path.resolve(__dirname, 'src/common'),
 			pages: path.resolve(__dirname, 'src/pages'),
 			public: path.resolve(__dirname, 'public/'),
 			// 'public/*': ['public/*'],

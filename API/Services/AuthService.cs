@@ -7,7 +7,7 @@ using Infrastructure.Helpers;
 
 namespace API.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private UserRepository _userRepository { get; init; }
 

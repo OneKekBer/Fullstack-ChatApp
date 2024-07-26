@@ -1,5 +1,7 @@
-﻿using API.Database;
+﻿using API.Controllers;
+using API.Database;
 using API.Domains.User.Models;
+using API.Helpers;
 using API.Models;
 using API.Repository;
 using API.Services;
@@ -12,10 +14,11 @@ namespace EmptyAspMvcAuth.Controllers
 
     [ApiController()]
     [Route("api/auth/")]
-    public class AuthController : Controller
+    public class AuthController : Controller, IAuthController
     {
         private readonly UserRepository _userRepository;
         private readonly AuthService _authService;
+        private readonly ChatRepository _chatRepository;
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(AuthService authService, UserRepository userRepository, ILogger<AuthController> logger)
@@ -59,7 +62,11 @@ namespace EmptyAspMvcAuth.Controllers
 
             var existingUser = await _authService.LogIn(registerData);
 
-            return Ok();
+            var userChats = await _chatRepository.GetUserChats(existingUser.Id);
+            
+            var safeUserChats = SafeConverter.ChatToSafeConverter(userChats); // Question: does this method should be async???
+
+            return Ok(safeUserChats);
         }
     }
 }

@@ -29,6 +29,7 @@
 			"interfaces/*": ["src/interfaces/*"],
 			"public/*": ["public/*"],
 			"store/*": ["src/store/*"],
+			"common/*": ["src/common/*"],
 			"pages/*": ["src/pages/*"]
 		}
 		// Add more paths as needed

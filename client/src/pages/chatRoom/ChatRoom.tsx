@@ -11,9 +11,13 @@ import IChat from 'interfaces/IChat'
 
 interface ChatRoomProps {
 	connection: HubConnection | undefined
+	toggleSearchPopup: () => void
 }
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ connection }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({
+	connection,
+	toggleSearchPopup,
+}) => {
 	const navigate = useNavigate()
 	const login = useAppSelector(state => state.user.Login)
 	const onlineUsers = useAppSelector(state => state.user.OnlineUsers)
@@ -30,10 +34,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ connection }) => {
 	}
 
 	useEffect(() => {
-		if (login === '' || login === undefined) {
-			navigate('/login')
-			toast.info('For using messenger you should login')
-		}
+		// if (login === '' || login === undefined) {
+		// 	navigate('/login')
+		// 	toast.info('For using messenger you should login')
+		// }
 	}, [])
 
 	const HandleTextToUser = async (connectionId: string) => {
@@ -44,12 +48,35 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ connection }) => {
 		}
 	}
 
+	const NewChatButtonHandler = async () => {
+		try {
+			const res = await fetch(`${import.meta.env.VITE_API_URL}chat`, {
+				method: 'POST',
+				body: JSON.stringify({ Login: login, Name: 'help' }),
+				headers: { 'Content-Type': 'application/json' },
+			})
+
+			if (res.ok) {
+				toast.success('Group create successfully')
+			}
+		} catch (err) {
+			toast.error('Something went wrong')
+		}
+	}
+
 	return (
 		<>
 			<div className='overflow-hidden bg'>
 				<div className='glass overflow-hidden  shadow-lg max-w-[1300px] w-[80vw] h-[70vh] grid grid-cols-10'>
 					<div className='col-span-3 border-r border-gray-500'>
 						<h1 className='text-[30px] p-4'>Your vibes</h1>
+						<Button
+							onClick={toggleSearchPopup}
+							colorScheme='blue'
+							className='p-4 mx-4'
+						>
+							New chat
+						</Button>
 						<div className='h-[60vh] flex flex-col overflow-y-scroll divHideScroll'>
 							{chats.map((chat, i) => {
 								return (
