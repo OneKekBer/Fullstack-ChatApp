@@ -34,7 +34,6 @@ export const roomSlice = createSlice({
 				state.chats.push({
 					name: action.payload.chatName,
 					messages: action.payload.messages,
-					userIds: [],
 				})
 			}
 		},

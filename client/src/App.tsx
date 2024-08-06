@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import WaitingRoom from './pages/waitingRoom/WaitingRoom'
 import Error from './pages/error/Error'
 import ChatRoom from './pages/chatRoom/ChatRoom'
@@ -24,7 +24,7 @@ function App() {
 	const [connection, setConnection] = useState<HubConnection | undefined>()
 	const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false)
 	const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false)
-
+	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 
 	const toggleSearchPopup = () => {
@@ -64,7 +64,7 @@ function App() {
 			setConnection(conn)
 		} catch (err) {
 			toast.error('something went wrong')
-
+			navigate('/error')
 			console.error(
 				'Error while establishing connection or sending message:',
 				err
@@ -97,6 +97,7 @@ function App() {
 					element={<Login ConnectToHub={ConnectToHub} />}
 				/>
 				<Route path='/register' element={<Register />} />
+
 				<Route
 					path='/chat'
 					element={

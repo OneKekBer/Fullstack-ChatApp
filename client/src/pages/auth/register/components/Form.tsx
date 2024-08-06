@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Button, Input } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
-import { SuccessToast } from 'src/common/toasts/SuccessToast'
 
 interface FormProps {
 	FetchRegister: (Login: string, Password: string) => Promise<void>
@@ -10,7 +8,6 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ FetchRegister }) => {
 	const [login, setLogin] = useState('')
 	const [password, setPassword] = useState('')
-	const navigate = useNavigate()
 
 	const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()

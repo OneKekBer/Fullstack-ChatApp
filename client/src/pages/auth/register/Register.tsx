@@ -41,8 +41,8 @@ const Register = () => {
 
 	return (
 		<div className='bg'>
-			<div className='glass w-[500px] h-[600px]'>
-				<h1 className='text-center'>Register</h1>
+			<div className='glass w-[500px] h-[600px] p-5'>
+				<h1 className='text-center text-[30px] mb-5'>Register</h1>
 				<div className='text-red-500'>{messageError}</div>
 				<Form FetchRegister={FetchRegister} />
 				<div

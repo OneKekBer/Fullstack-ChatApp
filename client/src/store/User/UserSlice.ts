@@ -1,29 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import IConnectUserData from 'interfaces/IConnectUserData'
 
 interface CounterState {
 	Login: string
-	OnlineUsers: IConnectUserData[]
 }
 
 // Define the initial state using that type
 const initialState: CounterState = {
 	Login: '',
-	OnlineUsers: [
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-		// { login: 'hi', connectionId: 'q4dada' },
-	],
 }
 
 export const userSlice = createSlice({
@@ -36,21 +20,9 @@ export const userSlice = createSlice({
 		LogOut: state => {
 			state.Login = ''
 		},
-
-		SetUserIsOnline: (state, action: PayloadAction<IConnectUserData[]>) => {
-			state.OnlineUsers = []
-			state.OnlineUsers = action.payload.filter(
-				user => user.login !== state.Login
-			)
-		},
-		// SetUserIsOffline: (state, action: PayloadAction<string>) => {
-		// 	state.OnlineUsers = state.OnlineUsers.filter(
-		// 		user => user !== action.payload
-		// 	)
-		// },
 	},
 })
 
-export const { LogIn, LogOut, SetUserIsOnline } = userSlice.actions
+export const { LogIn, LogOut } = userSlice.actions
 
 export default userSlice.reducer

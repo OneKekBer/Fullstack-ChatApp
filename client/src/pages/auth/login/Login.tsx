@@ -46,8 +46,8 @@ const Login: React.FC<LoginProps> = ({ ConnectToHub }) => {
 
 	return (
 		<div className='bg'>
-			<div className='glass w-[500px] h-[600px]'>
-				<div>Login</div>
+			<div className='glass w-[500px] h-[600px] p-5'>
+				<h1 className='text-center text-[30px] mb-5'>Login</h1>
 				<div className='text-red-500'>{messageError}</div>
 				<Form FetchLogin={FetchLogin} />
 				<div

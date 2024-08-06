@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Button, Input } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
 
 interface FormProps {
 	FetchLogin: (Login: string, Password: string) => Promise<void>
@@ -9,7 +8,6 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ FetchLogin }) => {
 	const [login, setLogin] = useState('')
 	const [password, setPassword] = useState('')
-	// const navigate = useNavigate()
 
 	const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()

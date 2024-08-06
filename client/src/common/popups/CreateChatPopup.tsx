@@ -1,4 +1,5 @@
 import { Button, Input } from '@chakra-ui/react'
+import CloseButton from 'common/buttons/CloseButton'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useAppSelector } from 'store/hooks'
@@ -49,7 +50,7 @@ const CreateChatPopup: React.FC<SearchChatPopupProps> = ({
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
 			<div className='glass w-[500px]  bg-blue-100 p-5'>
 				<div className='flex justify-end w-full'>
-					<div onClick={toggleSearchPopup}>close</div>
+					<CloseButton onClick={toggleSearchPopup} />
 				</div>
 				<form
 					onSubmit={formSubmit}
