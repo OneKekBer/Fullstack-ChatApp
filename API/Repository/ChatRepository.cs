@@ -1,57 +1,64 @@
 ﻿using API.Database;
 using API.Exceptions;
 using API.Models;
+using Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository
 {
     public class ChatRepository : IChatRepository
     {
-        private readonly ChatDatabase _chatsDatabase;
+        private readonly AppDatabaseContext _appDatabase;
 
-        public ChatRepository(ChatDatabase chatDB)
+        public ChatRepository(AppDatabaseContext appDb)
         {
-            _chatsDatabase = chatDB;
+            _appDatabase = appDb;
         }
 
-        public async Task Add(Chat entiy)
+        public async Task Add(Chat entity)
         {
-            await _chatsDatabase.Chats.AddAsync(entiy);
+            var user = await GetByName(entity.Name);
 
-            await _chatsDatabase.SaveChangesAsync();
+            if(user is not null)
+            {
+                throw new AlreadyExistsException($"chat with name {entity.Name} already exists");
+            }
+
+            await _appDatabase.Chats.AddAsync(entity);
+
+            await _appDatabase.SaveChangesAsync();
         }
 
         public async Task<Chat> GetById(Guid id)
         {
-            var searchingGroup = await _chatsDatabase.Chats.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
+            var searchingGroup = await _appDatabase.Chats.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException("chat repository", "get by id");
 
             return searchingGroup;
         }
 
-        public async Task AddConnectionIdToChat(Chat chat, string ConnectionId) // Question: is it correct ?? should i find by id chat and then use it in method
+        public async Task AddUserIdToChat(Chat chat, Guid userId)
         {
-            chat.ConnectionId.Add(ConnectionId);
-            _chatsDatabase.Update(chat);
+            var isContains = chat.UsersIds.Contains(userId);
 
-            await _chatsDatabase.SaveChangesAsync();
+            if (isContains)
+                throw new Exception("user id already exists in chat");
+
+            chat.UsersIds.Add(userId);
+            await _appDatabase.SaveChangesAsync();
         }
 
-        public async Task RemoveConnectionIdInAllChats(string connectionId) // Warning: maybe there will be bug, honestly idk))
+        public async Task AddConnectionIdToChat(Chat chat, string connectionId)
         {
-            var chats = await _chatsDatabase.Chats.Where(x=> x.ConnectionId.Contains(connectionId)).ToListAsync();
+            chat.ConnectionIds.Add(connectionId);
+            //_appDatabase.Update(chat);
 
-            foreach (Chat chat in chats)
-            {
-                chat.ConnectionId.Remove(connectionId);
-                _chatsDatabase.Update(chat);
-            }
-
-            await _chatsDatabase.SaveChangesAsync();
+            await _appDatabase.SaveChangesAsync();
         }
 
-        public async Task<List<Chat>> GetUserChats(Guid id)
+  
+        public async Task<List<Chat>> GetUserChats(Guid userId)
         {
-            var chats = await _chatsDatabase.Chats.Where(x => x.UsersId.Contains(id)).ToListAsync();  
+            var chats = await _appDatabase.Chats.Where(x => x.UsersIds.Contains(userId)).ToListAsync();  
 
             return chats;
         }
@@ -59,6 +66,42 @@ namespace API.Repository
         public Task Remove(Chat entity)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<Chat> GetByName(string name)
+        {
+            var chat = _appDatabase.Chats.FirstOrDefaultAsync(x => x.Name == name) ?? throw new NotFoundInDatabaseException("chat repository", "get by name");
+            
+            return chat;
+        }
+
+        public async Task RemoveConnectionIdInAllChats(string connectionId) // Warning: maybe there will be bug, honestly idk))
+        {
+            var chats = await _appDatabase.Chats.Where(x=> x.ConnectionIds.Contains(connectionId)).ToListAsync();
+
+            foreach (Chat chat in chats)
+            {
+                chat.ConnectionIds.Remove(connectionId);
+                _appDatabase.Update(chat);
+            }
+
+            await _appDatabase.SaveChangesAsync();
+        }
+
+
+        public async Task AddConnectionIdToAllUserChats(User user, string connectionId)
+        {
+            var chats = await _appDatabase.Chats
+                .Where(x => x.UsersIds.Contains(user.Id))
+                .ToListAsync();
+
+            foreach (var chat in chats)
+            {
+                if (!chat.ConnectionIds.Contains(connectionId))
+                    chat.ConnectionIds.Add(connectionId);
+            }
+
+            await _appDatabase.SaveChangesAsync();
         }
     }
 }

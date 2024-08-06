@@ -1,29 +1,29 @@
-﻿using API.Exceptions;
+﻿using API.Database;
+using API.Exceptions;
 using API.Models;
-using API.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UsersDatabase _usersDatabase;
+        private readonly AppDatabaseContext _appDatabase;
 
-        public UserRepository(UsersDatabase usersDB)
+        public UserRepository(AppDatabaseContext appDb)
         {
-            _usersDatabase = usersDB;
+            _appDatabase = appDb;
         }
 
         public async Task Add(User entity)
         {
-            await _usersDatabase.Users.AddAsync(entity);
+            await _appDatabase.Users.AddAsync(entity);
 
-            await _usersDatabase.SaveChangesAsync();
+            await _appDatabase.SaveChangesAsync();
         }
 
         public async Task<User> GetById(Guid id)
         {
-            var user = await _usersDatabase.Users.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
+            var user = await _appDatabase.Users.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
 
             return user;
         }
@@ -33,16 +33,18 @@ namespace API.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<bool> IsLoginExists(string login)
-        {
-            var searchingLogin = await _usersDatabase.Users.FirstOrDefaultAsync(user => user.Login == login) ?? throw new NotImplementedException();
+            public async Task<bool> IsLoginExists(string login)
+            {
+            var searchingLogin = await _appDatabase.Users.FirstOrDefaultAsync(user => user.Login == login);
 
-            return true;
-        }
+                if(searchingLogin is not null)
+                    return true;
+                return false;
+            }
 
         public async Task<User> GetByLogin(string login)
         {
-            var user = await _usersDatabase.Users.FirstOrDefaultAsync(x => x.Login == login) ?? throw new NotImplementedException();
+            var user = await _appDatabase.Users.FirstOrDefaultAsync(x => x.Login == login) ?? throw new NotFoundInDatabaseException("user repository", "GetByLogin");
 
             return user;
         }

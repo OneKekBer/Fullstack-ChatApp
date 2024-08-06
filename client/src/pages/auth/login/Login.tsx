@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LogIn } from 'store/User/UserSlice'
 import { toast } from 'react-toastify'
+import { SetChats } from 'store/Chat/RoomSlice'
 
 interface LoginProps {
 	ConnectToHub: (Login: string) => Promise<void>
@@ -30,9 +31,10 @@ const Login: React.FC<LoginProps> = ({ ConnectToHub }) => {
 				return
 			}
 			console.log(data)
-			ConnectToHub(Login) //сделать проверку на успешное подключение
 			navigate('/chat')
+			ConnectToHub(Login) //сделать проверку на успешное подключение
 			dispatch(LogIn(Login))
+			dispatch(SetChats(data))
 			toast.success('You loged in successfully')
 		} catch (error) {
 			console.error('Fetch error: ', error)

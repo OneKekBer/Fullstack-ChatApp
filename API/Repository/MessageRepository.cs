@@ -1,36 +1,36 @@
-﻿using API.Exceptions;
+﻿using API.Database;
+using API.Exceptions;
 using API.Models;
-using API.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository
 {
     public class MessageRepository : IMessageRepository
     {
-        private readonly MessagesDatabase _messagesDatabase;
+        private readonly AppDatabaseContext _appDatabase;
 
-        public MessageRepository(MessagesDatabase messagesDatabase)
+        public MessageRepository(AppDatabaseContext appDb)
         {
-            _messagesDatabase = messagesDatabase;
+            _appDatabase = appDb;
         }
 
-        public async Task Add(Message entiy)
+        public async Task Add(Message entity)
         {
-            await _messagesDatabase.Messages.AddAsync(entiy);
+            await _appDatabase.Messages.AddAsync(entity);
 
-            await _messagesDatabase.SaveChangesAsync();
+            await _appDatabase.SaveChangesAsync();
         }
 
         public async Task<Message> GetById(Guid id)
         {
-            var message = await _messagesDatabase.Messages.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
+            var message = await _appDatabase.Messages.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();
 
             return message;
         }
 
         public async Task<IEnumerable<Message>> GetChatMessages(Guid chatId)
         {
-            var messages = await _messagesDatabase.Messages
+            var messages = await _appDatabase.Messages
                 .Where(x => x.ChatId == chatId)
                 .OrderBy(x => x.CreatedAt)
                 .ToListAsync();

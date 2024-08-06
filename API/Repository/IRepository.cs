@@ -9,5 +9,7 @@ namespace API.Repository
         public Task Remove(T entity);
 
         public Task<T> GetById(Guid id);
+
+        // plus delete
     }
 }

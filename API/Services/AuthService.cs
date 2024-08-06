@@ -1,7 +1,6 @@
 ﻿using API.Domains.User.Models;
 using API.Models;
 using API.Repository;
-using API.Server;
 using Infrastructure.Helpers;
 
 
@@ -9,9 +8,9 @@ namespace API.Services
 {
     public class AuthService : IAuthService
     {
-        private UserRepository _userRepository { get; init; }
+        private IUserRepository _userRepository { get; init; }
 
-        public AuthService(UserRepository UserRepository)
+        public AuthService(IUserRepository UserRepository)
         {
             _userRepository = UserRepository;
         }
@@ -30,7 +29,7 @@ namespace API.Services
         {
             if (await _userRepository.IsLoginExists(registerData.Login))
                 throw new Exception();
-
+            
             var createdUser = new User(registerData.Login, HashHelper.ConvertPasswordToHash(registerData.Password));
             await _userRepository.Add(createdUser);
             return createdUser;

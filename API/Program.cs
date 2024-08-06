@@ -2,9 +2,7 @@ using API.Database;
 using API.Hubs;
 using API.Middlewares;
 using API.Repository;
-using API.Server;
 using API.Services;
-using EmptyAspMvcAuth.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,12 +12,8 @@ builder.Services.AddLogging();
 builder.Services.AddControllers();
 
 //db
-builder.Services.AddDbContext<ChatDatabase>(options =>
-    options.UseInMemoryDatabase("ChatRooms"));
-builder.Services.AddDbContext<UsersDatabase>(options =>
-    options.UseInMemoryDatabase("Users"));
-builder.Services.AddDbContext<MessagesDatabase>(options =>
-    options.UseInMemoryDatabase("Messages"));
+builder.Services.AddDbContext<AppDatabaseContext>(options =>
+    options.UseInMemoryDatabase("AppDatabase"));
 
 //cors
 builder.Services.AddCors(options =>
@@ -36,12 +30,12 @@ builder.Services.AddCors(options =>
 });
 
 //services
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<MessageRepository>();
-builder.Services.AddScoped<ChatRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
-builder.Services.AddScoped<AuthService>(); // potential error witg scoped!!
-builder.Services.AddScoped<ChatService>(); // potential error witg scoped!!
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 var app = builder.Build();
 

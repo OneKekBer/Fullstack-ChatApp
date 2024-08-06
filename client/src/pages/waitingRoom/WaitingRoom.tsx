@@ -1,14 +1,10 @@
-import { useAppSelector } from 'store/hooks'
-
 import { Button } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 interface WaitingRoom {}
 
 const WaitingRoom: React.FC<WaitingRoom> = () => {
-	const rooms = useAppSelector(state => state.rooms.rooms)
 	const navigate = useNavigate()
-	console.log(rooms)
 
 	return (
 		<div className='bg'>

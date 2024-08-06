@@ -8,25 +8,23 @@ using API.Services;
 using Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace EmptyAspMvcAuth.Controllers
+namespace API.Controllers
 {
-
     [ApiController()]
     [Route("api/auth/")]
-    public class AuthController : Controller, IAuthController
+    public class AuthController : Controller
     {
-        private readonly UserRepository _userRepository;
-        private readonly AuthService _authService;
-        private readonly ChatRepository _chatRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;
+        private readonly IChatRepository _chatRepository;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(AuthService authService, UserRepository userRepository, ILogger<AuthController> logger)
+        public AuthController(IAuthService authService,IChatRepository chatRepository, IUserRepository userRepository, ILogger<AuthController> logger)
         {
             _userRepository = userRepository;
             _authService = authService;
+            _chatRepository = chatRepository;
             _logger = logger;
-            AddNewUser();
         }
 
         public async Task AddNewUser()

@@ -4,21 +4,36 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [ApiController]
+    [ApiController()]
     [Route("api/chat")]
-    public class ChatController : Controller, IChatController
+    public class ChatController : Controller
     {
-        private readonly ChatService _chatService;
+        private readonly IChatService _chatService;
+        private readonly ILogger<ChatController> _logger;
 
-        public ChatController(ChatService chatService)
+        public ChatController(IChatService chatService, ILogger<ChatController> logger)
         {
             _chatService = chatService;
+            _logger = logger;
+        }
+
+        [HttpPost("find")]
+        public async Task<IActionResult> Find([FromBody] FindChatDTO findChatDTO)
+        {
+            _logger.LogInformation("chat post controller");
+            var chat = await _chatService.Find(findChatDTO);
+
+            if(chat is null)
+                return NotFound(new {Message = "Chat not found"});
+
+            return Ok(chat.Name);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateChat([FromBody] CreateChatDTO createChatDTO)
+        public async Task<IActionResult> Create([FromBody] CreateChatDTO createChatDTO)
         {
-            await _chatService.CreateChat(createChatDTO);
+            _logger.LogInformation("chat post controller");
+            await _chatService.Create(createChatDTO);
 
             return Ok();
         }
