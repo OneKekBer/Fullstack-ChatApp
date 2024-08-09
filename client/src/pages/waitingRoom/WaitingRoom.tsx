@@ -1,17 +1,33 @@
-import Form from './components/Form'
+import { Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
-const WaitingRoom = ({
-	JoinChat,
-}: {
-	JoinChat: (chatName: string, name: string) => Promise<void>
-}) => {
+interface WaitingRoom {}
+
+const WaitingRoom: React.FC<WaitingRoom> = () => {
+	const navigate = useNavigate()
+
 	return (
-		<div className='w-screen h-screen bg-gray-300 flex justify-center items-center '>
-			<div className='bg-gray-100 shadow-lg w-[500px] h-[300px] p-[40px]'>
-				<h1 className='text-[30px] text-center font-semibold mb-5'>
-					Welcome into VIBEr!
-				</h1>
-				<Form JoinChat={JoinChat} />
+		<div className='bg'>
+			<div className='glass w-[500px] h-[300px] p-[40px]'>
+				<div className='text-center text-[40px]'>Welcome To Viber</div>
+				<div className='flex justify-center gap-2'>
+					<Button
+						size='lg'
+						onClick={() => {
+							navigate('/login')
+						}}
+					>
+						Login
+					</Button>
+					<Button
+						size='lg'
+						onClick={() => {
+							navigate('/register')
+						}}
+					>
+						Register
+					</Button>
+				</div>
 			</div>
 		</div>
 	)
