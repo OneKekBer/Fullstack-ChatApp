@@ -75,6 +75,9 @@ namespace API.Hubs
 
         public async Task SendMessage(string authorLogin, string text, string chatName)
         {
+            if (text.Length == 0)
+                return;
+
             var user = _userRepository.GetByLogin(authorLogin).Result;
             var chat = _chatRepository.GetByName(chatName).Result;
 

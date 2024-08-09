@@ -48,5 +48,10 @@ namespace API.Repository
 
             return user;
         }
+
+        public Task<IEnumerable<User>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

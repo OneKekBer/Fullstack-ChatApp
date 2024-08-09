@@ -10,6 +10,8 @@ namespace API.Repository
 
         public Task<T> GetById(Guid id);
 
+        public Task<IEnumerable<T>> GetAll();
+
         // plus delete
     }
 }

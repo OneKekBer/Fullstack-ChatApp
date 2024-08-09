@@ -38,7 +38,6 @@ export const roomSlice = createSlice({
 			}
 		},
 		SetChats: (state, action: PayloadAction<IChat[]>) => {
-			// боже блять какой я бездарь
 			state.chats = []
 			action.payload.map(chat => {
 				if (!chat.messages) chat.messages = []

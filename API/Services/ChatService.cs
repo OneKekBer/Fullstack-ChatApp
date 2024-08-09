@@ -22,11 +22,19 @@ namespace API.Services
             await _chatRepository.Add(chat);
         }
 
-        public async Task<Chat> Find(FindChatDTO findChatDTO)
+        public async Task<IEnumerable<Chat>> Find(FindChatDTO findChatDTO)
         {
-            var chat = await _chatRepository.GetByName(findChatDTO.chatName);
+            var chats = await _chatRepository.GetAll();
 
-            return chat;
+            //foreach (var chat in chats)
+            //{
+            //    if (chat.Name.Contains(findChatDTO.chatName))
+            //        yield return chat;
+            //}
+            
+            var refs = chats.Where((x) => x.Name.Contains(findChatDTO.chatName)).Take(10).ToList();
+
+            return refs;
         }
     }
 }

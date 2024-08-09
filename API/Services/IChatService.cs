@@ -7,6 +7,6 @@ namespace API.Services
     {
         public Task Create(CreateChatDTO createChatDTO);
 
-        public Task<Chat> Find(FindChatDTO findChatDTO);
+        public Task<IEnumerable<Chat>> Find(FindChatDTO findChatDTO);
     }
 }

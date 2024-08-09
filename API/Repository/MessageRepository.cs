@@ -21,6 +21,11 @@ namespace API.Repository
             await _appDatabase.SaveChangesAsync();
         }
 
+        public Task<IEnumerable<Message>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Message> GetById(Guid id)
         {
             var message = await _appDatabase.Messages.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException();

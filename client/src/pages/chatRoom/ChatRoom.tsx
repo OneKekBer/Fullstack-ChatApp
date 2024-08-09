@@ -1,12 +1,11 @@
 import { HubConnection } from '@microsoft/signalr'
 import { useNavigate } from 'react-router-dom'
-import Form from './components/Form'
 import { useEffect, useRef, useState } from 'react'
 import { useAppSelector } from 'store/hooks'
 import { toast } from 'react-toastify'
-import { Button } from '@chakra-ui/react'
 import IChat from 'interfaces/IChat'
-import Message from './components/Message'
+import ChatList from './components/ChatList'
+import CurrentChatComponent from './components/CurrentChatComponent'
 
 interface ChatRoomProps {
 	connection: HubConnection | undefined
@@ -23,8 +22,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 	const login = useAppSelector(state => state.user.Login)
 	const chats = useAppSelector(state => state.rooms.chats)
 	const [currentChat, setCurrentChat] = useState<IChat | undefined>(undefined)
+
+	console.log(chats[0] ? chats[0] : undefined)
+
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const messagesContainerRef = useRef<HTMLDivElement>(null)
+
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
 	const findChatByName = (chatName: string | undefined): IChat | undefined => {
 		return chats?.find(chat => chat.name === chatName)
@@ -32,7 +36,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 
 	const handleChange = () => {
 		const newChat: IChat | undefined = findChatByName(currentChat?.name)
-
 		if (newChat?.messages?.length !== currentChat?.messages.length)
 			setCurrentChat(newChat)
 		if (messagesEndRef.current && messagesContainerRef.current) {
@@ -76,72 +79,53 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 	return (
 		<>
 			<div className='overflow-hidden bg'>
-				<div className='glass overflow-hidden shadow-lg max-w-[1300px] w-[80vw] h-[70vh] p-5 grid grid-cols-10'>
-					<div className='col-span-3 border-r  border-gray-500'>
-						<h1 className='text-[30px] mb-5 '>Your vibes</h1>
-						<div className='flex gap-5'>
-							<Button
-								onClick={toggleCreatePopup}
-								colorScheme='blue'
-								className=''
-							>
-								New chat
-							</Button>
+				<div className='glass overflow-hidden shadow-lg max-w-[1300px] w-[90vw] h-[90vh] md:w-[80vw] md:h-[70vh] p-5 md:grid grid-cols-10'>
+					<div
+						onClick={() => {
+							setIsMobileMenuOpen(!isMobileMenuOpen)
+						}}
+						className='absolute block cursor-pointer top-5 right-5 md:hidden'
+					>
+						menu
+					</div>
 
-							<Button
-								onClick={toggleSearchPopup}
-								colorScheme='blue'
-								className=''
-							>
-								Find chat
-							</Button>
-						</div>
-						<div className='h-[60vh] flex flex-col overflow-y-scroll divHideScroll'>
-							{chats.map((chat, i) => {
-								return (
-									<div
-										onClick={() => {
-											handleChatClick(chat.name)
-										}}
-										className={`px-2 py-4 text-[22px] ${
-											i === 0 ? '' : 'border-t  border-gray-500'
-										}`}
-										key={i}
-									>
-										<div>{chat.name}</div>
-									</div>
-								)
-							})}
-						</div>
-					</div>
-					<div className='col-span-7 '>
-						{currentChat === undefined ? (
-							<div>please choose chat</div>
-						) : (
-							<div>
-								<h1 className='text-[30px] ml-5'>
-									{currentChat?.name}
-								</h1>
-								<div
-									ref={messagesContainerRef}
-									className='h-[50vh] overflow-y-scroll divHideScroll px-4 flex gap-4 flex-col'
-								>
-									{currentChat?.messages?.map((msg, i) => {
-										return (
-											<Message key={i} message={msg} login={login} />
-										)
-									})}
-									<div ref={messagesEndRef} />
-								</div>
-								<div className='px-10 mt-5'>
-									<Form
-										chatName={currentChat.name}
-										connection={connection}
-									/>
-								</div>
-							</div>
-						)}
-					</div>
+					{/* mobile */}
+					<section
+						className={`${
+							isMobileMenuOpen ? 'block' : 'hidden'
+						} h-full md:hidden`}
+					>
+						<ChatList
+							chats={chats}
+							handleChatClick={handleChatClick}
+							toggleCreatePopup={toggleCreatePopup}
+							toggleSearchPopup={toggleSearchPopup}
+						/>
+					</section>
+
+					{/* pc */}
+					<section className='hidden border-gray-500 md:border-r md:col-span-3 md:block'>
+						<ChatList
+							chats={chats}
+							handleChatClick={handleChatClick}
+							toggleCreatePopup={toggleCreatePopup}
+							toggleSearchPopup={toggleSearchPopup}
+						/>
+					</section>
+
+					<section
+						className={`${
+							isMobileMenuOpen ? 'hidden' : 'block'
+						} md:col-span-7 `}
+					>
+						<CurrentChatComponent
+							connection={connection}
+							messagesEndRef={messagesEndRef}
+							messagesContainerRef={messagesContainerRef}
+							login={login}
+							currentChat={currentChat}
+						/>
+					</section>
 				</div>
 			</div>
 		</>

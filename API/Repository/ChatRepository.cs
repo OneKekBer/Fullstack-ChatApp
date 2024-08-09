@@ -103,5 +103,12 @@ namespace API.Repository
 
             await _appDatabase.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Chat>> GetAll()
+        {
+            var chats = await _appDatabase.Chats.ToListAsync();
+
+            return chats;
+        }
     }
 }

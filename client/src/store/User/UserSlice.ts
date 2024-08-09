@@ -5,7 +5,6 @@ interface CounterState {
 	Login: string
 }
 
-// Define the initial state using that type
 const initialState: CounterState = {
 	Login: '',
 }

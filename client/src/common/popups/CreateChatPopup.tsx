@@ -48,7 +48,7 @@ const CreateChatPopup: React.FC<SearchChatPopupProps> = ({
 
 	return (
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
-			<div className='glass w-[500px]  bg-blue-100 p-5'>
+			<div className='glass w-[90vw] md:w-[500px]  bg-blue-100 p-5'>
 				<div className='flex justify-end w-full'>
 					<CloseButton onClick={toggleSearchPopup} />
 				</div>

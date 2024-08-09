@@ -21,12 +21,12 @@ namespace API.Controllers
         public async Task<IActionResult> Find([FromBody] FindChatDTO findChatDTO)
         {
             _logger.LogInformation("chat post controller");
-            var chat = await _chatService.Find(findChatDTO);
+            var references = await _chatService.Find(findChatDTO);
 
-            if(chat is null)
+            if(references is null)
                 return NotFound(new {Message = "Chat not found"});
 
-            return Ok(chat.Name);
+            return Ok(references);
         }
 
         [HttpPost]
