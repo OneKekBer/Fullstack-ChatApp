@@ -2,7 +2,7 @@ import { Button, Input } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
 import CloseButton from 'common/buttons/CloseButton'
 import IChat from 'interfaces/IChat'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from 'store/hooks'
 
 interface SearchChatPopupProps {
@@ -54,6 +54,10 @@ const FindChatPopup: React.FC<SearchChatPopupProps> = ({
 		}
 	}
 
+	useEffect(() => {
+		findChat('')
+	}, [isSearchPopupOpen])
+
 	const formSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 		findChat(chatInput)
@@ -61,7 +65,7 @@ const FindChatPopup: React.FC<SearchChatPopupProps> = ({
 
 	return (
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
-			<div className='glass w-[90vw] md:w-[500px] bg-blue-100 p-5'>
+			<div className='glass relative w-[90vw] md:w-[500px] bg-blue-100 p-5'>
 				<div className='flex justify-end w-full'>
 					<CloseButton onClick={toggleSearchPopup} />
 				</div>

@@ -70,10 +70,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 	}, [currentChat])
 
 	useEffect(() => {
-		if (login === '' || login === undefined) {
-			navigate('/login')
-			toast.info('For using messenger you should login')
-		}
+		// if (login === '' || login === undefined) {
+		// 	navigate('/login')
+		// 	toast.info('For using messenger you should login')
+		// }
 	}, [])
 
 	return (

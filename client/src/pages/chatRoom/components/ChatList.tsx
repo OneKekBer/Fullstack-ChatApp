@@ -17,7 +17,6 @@ const ChatList: React.FC<ChatListProps> = ({
 }) => {
 	return (
 		<div className=''>
-			<h1 className='text-[30px] mb-5 '>Your vibes</h1>
 			<div className='flex gap-5'>
 				<Button onClick={toggleCreatePopup} colorScheme='blue' className=''>
 					New chat

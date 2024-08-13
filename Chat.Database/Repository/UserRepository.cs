@@ -3,7 +3,7 @@ using API.Exceptions;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Repository
+namespace Database.Repository
 {
     public class UserRepository : IUserRepository
     {
@@ -33,14 +33,14 @@ namespace API.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<bool> IsLoginExists(string login)
-        {
+            public async Task<bool> IsLoginExists(string login)
+            {
             var searchingLogin = await _appDatabase.Users.FirstOrDefaultAsync(user => user.Login == login);
 
-            if(searchingLogin is not null)
-                return true;
-            return false;
-        }
+                if(searchingLogin is not null)
+                    return true;
+                return false;
+            }
 
         public async Task<User> GetByLogin(string login)
         {

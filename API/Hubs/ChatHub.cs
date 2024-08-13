@@ -42,15 +42,13 @@ namespace API.Hubs
         public record JoinChatDTO(string login, string chatName);
         public async Task JoinChat(JoinChatDTO joinChatDTO)
         {
-            _logger.LogInformation(joinChatDTO.chatName);
-            _logger.LogInformation(joinChatDTO.login);
-
             var chat = await _chatRepository.GetByName(joinChatDTO.chatName);
 
             if (chat is null)
             {
                 await Clients.Client(Context.ConnectionId).SendError($"Cannot find chat {joinChatDTO.chatName}");
-                throw new NotFoundInDatabaseException();
+                _logger.LogWarning("NotFoundInDatabaseException ");
+                return;
             }
 
             var user = await _userRepository.GetByLogin(joinChatDTO.login);
@@ -62,10 +60,10 @@ namespace API.Hubs
 
             await Clients.Client(Context.ConnectionId).SendChatMessages(chat.Name, messages);
         }
+
         public record GetChatMessagesDTO(string chatName);
         public async Task GetChatMessages(GetChatMessagesDTO getChatMessagesDTO)
         {
-            _logger.LogInformation("get chat messages is working!!");
             var chat = await _chatRepository.GetByName(getChatMessagesDTO.chatName);
 
             var messages = await _messageRepository.GetChatMessages(chat.Id);

@@ -11,7 +11,7 @@
 }
 
 .glass {
-	backdrop-filter: blur(19px) saturate(180%);
+	backdrop-filter: blur(30px) saturate(80%);
 	background-color: rgba(0, 0, 0, 0.427);
 	border-radius: 20px;
 }
@@ -24,7 +24,13 @@
 	width: 100vw;
 	height: 100vh;
 
-	background-image: url('./../public/bg3.webp');
+	/* background-image: url('./../public/bg3.webp'); */
+	background: rgb(235, 235, 235);
+	background: linear-gradient(
+		62deg,
+		rgba(235, 235, 235, 1) 25%,
+		rgba(155, 238, 251, 1) 100%
+	);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;

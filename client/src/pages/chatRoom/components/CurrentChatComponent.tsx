@@ -25,7 +25,16 @@ const CurrentChatComponent: React.FC<CurrentChatComponentProps> = ({
 				<div>please choose chat</div>
 			) : (
 				<div>
-					<h1 className='text-[30px] ml-5'>{currentChat?.name}</h1>
+					<p className='text-[30px] ml-5'>{currentChat?.name}</p>
+					<h4 className='text-[15px] text-blue-300 ml-5'>
+						{currentChat?.connectionIds?.length == 0 ? (
+							<div></div>
+						) : (
+							<div>
+								{currentChat?.connectionIds?.length} users online
+							</div>
+						)}
+					</h4>
 					<div
 						ref={messagesContainerRef}
 						className='h-[50vh] overflow-y-scroll divHideScroll px-4 flex gap-4 flex-col'

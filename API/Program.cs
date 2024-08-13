@@ -15,6 +15,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDatabaseContext>(options =>
     options.UseInMemoryDatabase("AppDatabase"));
 
+//invoke migrations
+//testy!!!!!!
+//design!!!
+
+
 //cors
 builder.Services.AddCors(options =>
 {

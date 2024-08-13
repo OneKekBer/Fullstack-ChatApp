@@ -58,13 +58,13 @@ const CreateChatPopup: React.FC<SearchChatPopupProps> = ({
 					action=''
 				>
 					<Input
-						className='col-span-2'
+						className='col-span-3'
 						value={chatName}
 						onChange={e => setChatName(e.target.value)}
 					/>
-					<Button type='submit' className='col-span-1' colorScheme='blue'>
+					{/* <Button type='submit' className='col-span-1' colorScheme='blue'>
 						Send
-					</Button>
+					</Button> */}
 				</form>
 			</div>
 		</div>

@@ -27,14 +27,6 @@ namespace API.Controllers
             _logger = logger;
         }
 
-        public async Task AddNewUser()
-        {
-            await _userRepository.Add(new User("vital", HashHelper.ConvertPasswordToHash("228")));
-            await _userRepository.Add(new User("ilya", HashHelper.ConvertPasswordToHash("228")));
-            await _userRepository.Add(new User("anton", HashHelper.ConvertPasswordToHash("228")));
-            await _userRepository.Add(new User("valera", HashHelper.ConvertPasswordToHash("228")));
-        }
-
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerData)
         {

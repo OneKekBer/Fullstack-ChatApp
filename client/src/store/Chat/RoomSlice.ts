@@ -51,6 +51,7 @@ export const roomSlice = createSlice({
 			const chat = state.chats.find(
 				ch => ch.name === action.payload.chatName
 			)
+
 			if (chat) {
 				if (!chat.messages) {
 					chat.messages = []

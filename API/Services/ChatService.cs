@@ -25,12 +25,6 @@ namespace API.Services
         public async Task<IEnumerable<Chat>> Find(FindChatDTO findChatDTO)
         {
             var chats = await _chatRepository.GetAll();
-
-            //foreach (var chat in chats)
-            //{
-            //    if (chat.Name.Contains(findChatDTO.chatName))
-            //        yield return chat;
-            //}
             
             var refs = chats.Where((x) => x.Name.Contains(findChatDTO.chatName)).Take(10).ToList();
 

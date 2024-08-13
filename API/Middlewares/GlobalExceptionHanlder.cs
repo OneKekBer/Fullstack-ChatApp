@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Text.Json;
 
 namespace API.Middlewares;
@@ -47,12 +48,12 @@ public class GlobalExceptionHandler
     {
         _logger.LogError(exception.Message);
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
 
         var response = new
         {
             Error = exception.Message,
-            Message = "Bad request"
+            Message = "Unauthorized"
         };
 
         var jsonResponse = JsonSerializer.Serialize(response);

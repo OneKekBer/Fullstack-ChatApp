@@ -20,7 +20,7 @@ namespace API.Services
             var user = await _userRepository.GetByLogin(registerData.Login);
 
             if (!HashHelper.IsPasswordHashesEquals(user.PasswordHash, registerData.Password))
-                throw new Exception();
+                throw new Exception(); 
 
             return user;
         }
