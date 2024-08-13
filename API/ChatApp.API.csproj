@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Chat.Infrastructure.csproj" />
+    <ProjectReference Include="..\Infrastructure\ChatApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

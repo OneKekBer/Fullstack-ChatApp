@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.API", "API\Chat.API.csproj", "{2A0AB4F8-21DC-4B2C-A30D-CC7AEA056277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.API", "API\ChatApp.API.csproj", "{2A0AB4F8-21DC-4B2C-A30D-CC7AEA056277}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Chat.Client", "Client\Chat.Client.esproj", "{B4CDCA2A-6C79-4B59-9349-28FDBAEA54F1}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ChatApp.Client", "Client\ChatApp.Client.esproj", "{B4CDCA2A-6C79-4B59-9349-28FDBAEA54F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infrastructure", "Infrastructure\Chat.Infrastructure.csproj", "{5FC313F5-8FF7-4523-BD7A-0495955D1080}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Infrastructure", "Infrastructure\ChatApp.Infrastructure.csproj", "{5FC313F5-8FF7-4523-BD7A-0495955D1080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
