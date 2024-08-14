@@ -1,6 +1,6 @@
 import { Button, Input } from '@chakra-ui/react'
 import IChat from 'interfaces/IChat'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import loop from 'icons/loop/black.png'
 import plus from 'icons/plus/black.png'
 interface ChatListProps {
