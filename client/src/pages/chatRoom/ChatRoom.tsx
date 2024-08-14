@@ -79,7 +79,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 	return (
 		<>
 			<div className='overflow-hidden bg'>
-				<div className='bg-bg overflow-hidden shadow-lg max-w-[1300px] w-[90vw] h-[90vh] md:w-[80vw] md:h-[70vh] p-5 md:grid grid-cols-10'>
+				<div className='bg-bg overflow-hidden shadow-lg max-w-[1300px] w-[90vw] h-[90vh] md:w-[80vw] md:h-[70vh] p-5 pr-0 md:grid grid-cols-10'>
 					<div
 						onClick={() => {
 							setIsMobileMenuOpen(!isMobileMenuOpen)

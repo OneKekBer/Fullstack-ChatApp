@@ -66,8 +66,8 @@ const FindChatPopup: React.FC<SearchChatPopupProps> = ({
 	return (
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
 			<div className='bg-bg relative w-[90vw] md:w-[500px] p-5'>
-				<form onSubmit={formSubmit} className='grid grid-cols-3 gap-2'>
-					<InputGroup className='col-span-2'>
+				<form onSubmit={formSubmit} className='grid grid-cols-7 gap-2'>
+					<InputGroup className='col-span-6'>
 						<Input
 							className=''
 							value={chatInput}

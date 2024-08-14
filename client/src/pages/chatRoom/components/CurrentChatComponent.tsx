@@ -22,9 +22,11 @@ const CurrentChatComponent: React.FC<CurrentChatComponentProps> = ({
 	return (
 		<div>
 			{currentChat === undefined ? (
-				<div>please choose chat</div>
+				<div className='w-full min-h-[50vh] text-[30px] text-p flex justify-center items-center'>
+					please choose chat
+				</div>
 			) : (
-				<div>
+				<div className=''>
 					<p className='text-[35px] text-h1 ml-5'>{currentChat?.name}</p>
 					<h4 className='text-[15px] text-p mb-2 ml-5'>
 						{currentChat?.connectionIds?.length == 0 &&
@@ -36,7 +38,7 @@ const CurrentChatComponent: React.FC<CurrentChatComponentProps> = ({
 					</h4>
 					<div
 						ref={messagesContainerRef}
-						className='h-[50vh] overflow-y-scroll divHideScroll px-4 flex gap-4 flex-col'
+						className='h-[50vh] overflow-y-scroll bg-slate-100 divHideScroll px-4 flex gap-4 flex-col'
 					>
 						{currentChat?.messages?.map((msg, i) => {
 							return <Message key={i} message={msg} login={login} />
