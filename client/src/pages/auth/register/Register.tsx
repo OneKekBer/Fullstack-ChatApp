@@ -41,12 +41,12 @@ const Register = () => {
 
 	return (
 		<div className='bg'>
-			<div className='glass w-[500px] h-[600px] p-5'>
-				<h1 className='text-center text-[30px] mb-5'>Register</h1>
+			<div className='bg-bg w-[500px] h-[600px]  p-5'>
+				<h1 className='text-center text-[30px] text-h1 mb-5'>Register</h1>
 				<div className='text-red-500'>{messageError}</div>
 				<Form FetchRegister={FetchRegister} />
 				<div
-					className='font-light text-blue-300 underline cursor-pointer'
+					className='font-light text-p mt-2 underline cursor-pointer'
 					onClick={() => {
 						navigate('/login')
 					}}

@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 
 //db
 builder.Services.AddDbContext<AppDatabaseContext>(options =>
-    options.UseInMemoryDatabase("AppDatabase"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase")));
 
 //invoke migrations
 //testy!!!!!!

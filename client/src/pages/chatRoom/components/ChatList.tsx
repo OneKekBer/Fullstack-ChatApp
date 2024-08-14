@@ -7,6 +7,7 @@ interface ChatListProps {
 	toggleCreatePopup: () => void
 	toggleSearchPopup: () => void
 	handleChatClick: (chatName: string) => Promise<void>
+	currentChat: IChat | undefined
 }
 
 const ChatList: React.FC<ChatListProps> = ({
@@ -14,31 +15,42 @@ const ChatList: React.FC<ChatListProps> = ({
 	toggleCreatePopup,
 	toggleSearchPopup,
 	handleChatClick,
+	currentChat,
 }) => {
 	return (
 		<div className=''>
 			<div className='flex gap-5'>
-				<Button onClick={toggleCreatePopup} colorScheme='blue' className=''>
+				<Button
+					className='font-light'
+					onClick={toggleCreatePopup}
+					colorScheme='yellow'
+				>
 					New chat
 				</Button>
 
-				<Button onClick={toggleSearchPopup} colorScheme='blue' className=''>
+				<Button
+					className='font-light'
+					onClick={toggleSearchPopup}
+					colorScheme='yellow'
+				>
 					Find chat
 				</Button>
 			</div>
-			<div className='h-[60vh] flex flex-col overflow-y-scroll divHideScroll'>
+			<div className='h-[60vh] mt-4 flex flex-col overflow-y-scroll divHideScroll'>
 				{chats.map((chat, i) => {
 					return (
 						<div
 							onClick={() => {
 								handleChatClick(chat.name)
 							}}
-							className={`px-2 py-4 text-[22px] ${
-								i === 0 ? '' : 'border-t  border-gray-500'
+							className={`px-2 hover:bg-slate-50 hover:text-button duration-200 cursor-pointer py-4 text-[22px] ${
+								currentChat?.name == chat.name
+									? 'text-button bg-slate-50'
+									: ''
 							}`}
 							key={i}
 						>
-							<div>{chat.name}</div>
+							{chat.name}
 						</div>
 					)
 				})}

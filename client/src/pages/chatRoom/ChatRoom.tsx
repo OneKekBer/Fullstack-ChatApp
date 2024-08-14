@@ -2,10 +2,10 @@ import { HubConnection } from '@microsoft/signalr'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useAppSelector } from 'store/hooks'
-import { toast } from 'react-toastify'
 import IChat from 'interfaces/IChat'
 import ChatList from './components/ChatList'
 import CurrentChatComponent from './components/CurrentChatComponent'
+import { toast } from 'react-toastify'
 
 interface ChatRoomProps {
 	connection: HubConnection | undefined
@@ -70,16 +70,16 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 	}, [currentChat])
 
 	useEffect(() => {
-		// if (login === '' || login === undefined) {
-		// 	navigate('/login')
-		// 	toast.info('For using messenger you should login')
-		// }
+		if (login === '' || login === undefined) {
+			navigate('/login')
+			toast.info('For using messenger you should login')
+		}
 	}, [])
 
 	return (
 		<>
 			<div className='overflow-hidden bg'>
-				<div className='glass overflow-hidden shadow-lg max-w-[1300px] w-[90vw] h-[90vh] md:w-[80vw] md:h-[70vh] p-5 md:grid grid-cols-10'>
+				<div className='bg-bg overflow-hidden shadow-lg max-w-[1300px] w-[90vw] h-[90vh] md:w-[80vw] md:h-[70vh] p-5 md:grid grid-cols-10'>
 					<div
 						onClick={() => {
 							setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -96,6 +96,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 						} h-full md:hidden`}
 					>
 						<ChatList
+							currentChat={currentChat}
 							chats={chats}
 							handleChatClick={handleChatClick}
 							toggleCreatePopup={toggleCreatePopup}
@@ -104,8 +105,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
 					</section>
 
 					{/* pc */}
-					<section className='hidden border-gray-500 md:border-r md:col-span-3 md:block'>
+					<section className='hidden md:col-span-3 md:block'>
 						<ChatList
+							currentChat={currentChat}
 							chats={chats}
 							handleChatClick={handleChatClick}
 							toggleCreatePopup={toggleCreatePopup}

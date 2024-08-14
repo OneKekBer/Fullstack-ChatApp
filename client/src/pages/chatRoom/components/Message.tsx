@@ -37,7 +37,9 @@ const Message: React.FC<MessageProps> = ({ message, login }) => {
 			<div>{message.authorLogin == login ? 'you' : message.authorLogin}</div>
 			<p
 				className={`${
-					message.authorLogin === login ? ' bg-blue-500' : 'bg-blue-950 '
+					message.authorLogin === login
+						? ' bg-button text-buttonText'
+						: 'bg-blue-950 '
 				} px-3 py-2 rounded-lg relative shadow-xl`}
 			>
 				{message.text}

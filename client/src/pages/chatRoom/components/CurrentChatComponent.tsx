@@ -25,15 +25,14 @@ const CurrentChatComponent: React.FC<CurrentChatComponentProps> = ({
 				<div>please choose chat</div>
 			) : (
 				<div>
-					<p className='text-[30px] ml-5'>{currentChat?.name}</p>
-					<h4 className='text-[15px] text-blue-300 ml-5'>
-						{currentChat?.connectionIds?.length == 0 ? (
-							<div></div>
-						) : (
-							<div>
-								{currentChat?.connectionIds?.length} users online
-							</div>
-						)}
+					<p className='text-[35px] text-h1 ml-5'>{currentChat?.name}</p>
+					<h4 className='text-[15px] text-p mb-2 ml-5'>
+						{currentChat?.connectionIds?.length == 0 &&
+							currentChat?.connectionIds && (
+								<div>
+									{currentChat?.connectionIds?.length} users online
+								</div>
+							)}
 					</h4>
 					<div
 						ref={messagesContainerRef}
@@ -44,7 +43,7 @@ const CurrentChatComponent: React.FC<CurrentChatComponentProps> = ({
 						})}
 						<div ref={messagesEndRef} />
 					</div>
-					<div className='mt-5 md:px-10'>
+					<div className='mt-5 md:px-2'>
 						<Form chatName={currentChat.name} connection={connection} />
 					</div>
 				</div>

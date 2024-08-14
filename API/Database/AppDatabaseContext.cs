@@ -10,6 +10,11 @@ namespace API.Database
         { 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
         //ensure create
 
         public DbSet<Chat> Chats { get; set; }

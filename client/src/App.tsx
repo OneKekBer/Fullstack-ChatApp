@@ -88,7 +88,7 @@ function App() {
 				position='top-right'
 				autoClose={2000}
 				closeOnClick
-				theme='dark'
+				theme='light'
 			/>
 			<Routes>
 				<Route path='/' element={<WaitingRoom />} />

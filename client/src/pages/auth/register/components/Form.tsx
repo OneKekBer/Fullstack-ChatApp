@@ -21,6 +21,7 @@ const Form: React.FC<FormProps> = ({ FetchRegister }) => {
 			action=''
 		>
 			<Input
+				className='text-p'
 				isInvalid={false}
 				placeholder='Enter your login'
 				value={login}
@@ -29,13 +30,14 @@ const Form: React.FC<FormProps> = ({ FetchRegister }) => {
 				size='md'
 			/>
 			<Input
+				className='text-p'
 				placeholder='Enter password'
 				value={password}
 				onChange={e => setPassword(e.target.value)}
 				type='text'
 				size='md'
 			/>
-			<Button type='submit' colorScheme='brand'>
+			<Button type='submit' colorScheme='yellow'>
 				Submit
 			</Button>
 		</form>

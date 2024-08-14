@@ -21,21 +21,24 @@ const Form: React.FC<FormProps> = ({ FetchLogin }) => {
 			action=''
 		>
 			<Input
+				className='text-p'
 				isInvalid={false}
 				placeholder='Enter your login'
 				value={login}
 				onChange={e => setLogin(e.target.value)}
 				type='text'
+				colorScheme='yellow'
 				size='md'
 			/>
 			<Input
+				className='text-p'
 				placeholder='Enter password'
 				value={password}
 				onChange={e => setPassword(e.target.value)}
 				type='text'
 				size='md'
 			/>
-			<Button type='submit' colorScheme='brand'>
+			<Button type='submit' colorScheme='yellow'>
 				Submit
 			</Button>
 		</form>

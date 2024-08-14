@@ -1,8 +1,8 @@
-import { Button, Input } from '@chakra-ui/react'
-import CloseButton from 'common/buttons/CloseButton'
+import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useAppSelector } from 'store/hooks'
+import close from 'icons/close/black.png'
 
 interface SearchChatPopupProps {
 	toggleSearchPopup: () => void
@@ -44,24 +44,34 @@ const CreateChatPopup: React.FC<SearchChatPopupProps> = ({
 		e.preventDefault()
 		createChat(chatName)
 		toggleSearchPopup()
+		setChatName('')
 	}
 
 	return (
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
-			<div className='glass w-[90vw] md:w-[500px]  bg-blue-100 p-5'>
-				<div className='flex justify-end w-full'>
+			<div className='bg-bg rounded-[20px] shadow-lg w-[90vw] md:w-[500px] p-5'>
+				{/* <div className='flex justify-end w-full'>
 					<CloseButton onClick={toggleSearchPopup} />
-				</div>
-				<form
-					onSubmit={formSubmit}
-					className='grid grid-cols-3 gap-2'
-					action=''
-				>
-					<Input
-						className='col-span-3'
-						value={chatName}
-						onChange={e => setChatName(e.target.value)}
-					/>
+				</div> */}
+				<form onSubmit={formSubmit} className='' action=''>
+					<InputGroup>
+						<Input
+							// _before={<CloseButton onClick={toggleSearchPopup} />}
+							placeholder='Enter chat name'
+							className='w-full'
+							value={chatName}
+							onChange={e => setChatName(e.target.value)}
+						/>
+						<InputRightElement>
+							<div className='w-[30px] h-[30px] cursor-pointer'>
+								<img
+									src={close}
+									alt='close'
+									onClick={toggleSearchPopup}
+								/>
+							</div>
+						</InputRightElement>
+					</InputGroup>
 					{/* <Button type='submit' className='col-span-1' colorScheme='blue'>
 						Send
 					</Button> */}

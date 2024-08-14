@@ -28,7 +28,7 @@ const Form: React.FC<FormProps> = ({ connection, chatName }) => {
 				value={message}
 				onChange={e => setMessage(e.target.value)}
 				type='text'
-				className='w-full rounded-xl px-4 bg-slate-300 text-slate-600 h-[40px]'
+				className='w-full rounded-xl px-4 text-p border-slate-600 border h-[40px]'
 			/>
 			{/* <Button type='submit' className='' colorScheme='blue'>
 				<img className=' h-[30px]' src={sendIcon} alt='' />

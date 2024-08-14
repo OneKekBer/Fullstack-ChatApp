@@ -12,6 +12,7 @@ export default defineConfig({
 			common: path.resolve(__dirname, 'src/common'),
 			pages: path.resolve(__dirname, 'src/pages'),
 			public: path.resolve(__dirname, 'public/'),
+			icons: path.resolve(__dirname, 'public/icons'),
 			// 'public/*': ['public/*'],
 			// Add more aliases as needed
 		},

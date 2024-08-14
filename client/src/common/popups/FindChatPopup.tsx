@@ -1,9 +1,9 @@
-import { Button, Input } from '@chakra-ui/react'
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { HubConnection } from '@microsoft/signalr'
-import CloseButton from 'common/buttons/CloseButton'
 import IChat from 'interfaces/IChat'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from 'store/hooks'
+import close from 'icons/close/black.png'
 
 interface SearchChatPopupProps {
 	toggleSearchPopup: () => void
@@ -65,17 +65,31 @@ const FindChatPopup: React.FC<SearchChatPopupProps> = ({
 
 	return (
 		<div className={`popup__bg ${isSearchPopupOpen ? 'flex' : 'hidden'}`}>
-			<div className='glass relative w-[90vw] md:w-[500px] bg-blue-100 p-5'>
-				<div className='flex justify-end w-full'>
-					<CloseButton onClick={toggleSearchPopup} />
-				</div>
+			<div className='bg-bg relative w-[90vw] md:w-[500px] p-5'>
 				<form onSubmit={formSubmit} className='grid grid-cols-3 gap-2'>
-					<Input
-						className='col-span-2'
-						value={chatInput}
-						onChange={e => setChatInput(e.target.value)}
-					/>
-					<Button type='submit' className='col-span-1' colorScheme='blue'>
+					<InputGroup className='col-span-2'>
+						<Input
+							className=''
+							value={chatInput}
+							placeholder='Enter chat name'
+							onChange={e => setChatInput(e.target.value)}
+						/>
+						<InputRightElement>
+							<div className='w-[30px] h-[30px] cursor-pointer'>
+								<img
+									src={close}
+									alt='close'
+									onClick={toggleSearchPopup}
+								/>
+							</div>
+						</InputRightElement>
+					</InputGroup>
+
+					<Button
+						type='submit'
+						className='col-span-1'
+						colorScheme='yellow'
+					>
 						Find
 					</Button>
 				</form>
@@ -94,7 +108,7 @@ const FindChatPopup: React.FC<SearchChatPopupProps> = ({
 										<Button
 											className='px-4 py-1'
 											size='m'
-											colorScheme='blue'
+											colorScheme='yellow'
 											onClick={() => {
 												joinChat(item.name)
 												setReferences([])

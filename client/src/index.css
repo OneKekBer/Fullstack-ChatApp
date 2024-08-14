@@ -10,6 +10,23 @@
 	font-family: 'M PLUS Rounded 1c', 'League Spartan', sans-serif;
 }
 
+:root {
+	--bg: #fffffe;
+	--bg-secondary: #e3f6f5;
+	--h1: #272343;
+	--p: #2d334a;
+	--button: #ffd803;
+	--button-text: #272343;
+}
+
+div {
+	color: var(--button-text);
+}
+
+h1 {
+	color: var(--h1);
+}
+
 .glass {
 	backdrop-filter: blur(30px) saturate(80%);
 	background-color: rgba(0, 0, 0, 0.427);
