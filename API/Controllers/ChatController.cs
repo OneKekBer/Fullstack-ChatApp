@@ -1,5 +1,5 @@
-﻿using API.Domains.Chat.Models;
-using API.Services;
+﻿using ChatApp.Business.Domains.Chat.Models;
+using ChatApp.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

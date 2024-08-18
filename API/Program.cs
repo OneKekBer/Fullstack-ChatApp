@@ -1,8 +1,10 @@
-using API.Database;
 using API.Hubs;
 using API.Middlewares;
-using API.Repository;
-using API.Services;
+using ChatApp.Business.Services;
+using ChatApp.Business.Services.Interfaces;
+using ChatApp.Data.Database;
+using ChatApp.Data.Repository;
+using ChatApp.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

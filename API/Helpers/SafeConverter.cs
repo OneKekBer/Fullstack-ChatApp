@@ -1,5 +1,5 @@
-﻿using API.Models;
-using API.Models.Safe;
+﻿using ChatApp.Data.Entities;
+using ChatApp.Data.Entities.Safe;
 
 namespace API.Helpers
 {

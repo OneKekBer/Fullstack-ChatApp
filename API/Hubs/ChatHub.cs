@@ -1,7 +1,5 @@
-﻿using API.Domains.User.Models;
-using API.Exceptions;
-using API.Models;
-using API.Repository;
+﻿using ChatApp.Data.Entities;
+using ChatApp.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using static API.Hubs.ChatHub;

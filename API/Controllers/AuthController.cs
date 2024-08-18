@@ -1,11 +1,7 @@
-﻿using API.Controllers;
-using API.Database;
-using API.Domains.User.Models;
-using API.Helpers;
-using API.Models;
-using API.Repository;
-using API.Services;
-using Infrastructure.Helpers;
+﻿using API.Helpers;
+using ChatApp.Business.Domains.User.Models;
+using ChatApp.Business.Services.Interfaces;
+using ChatApp.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
