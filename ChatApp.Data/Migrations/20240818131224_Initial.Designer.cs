@@ -16,6 +16,7 @@ namespace ChatApp.Data.Migrations
     [Migration("20240818131224_Initial")]
     partial class Initial
     {
+        //
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
