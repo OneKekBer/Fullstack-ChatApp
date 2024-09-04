@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url(https://fonts.googleapis.com/css?family=League+Spartan:100,200,300,regular,500,600,700,800,900);
+@import url(https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:100,300,regular,500,700,800,900);
+
+* {
+	color: #ffff;
+	font-family: 'M PLUS Rounded 1c', 'League Spartan', sans-serif;
+}
+
+:root {
+	--bg: #fffffe;
+	--bg-secondary: #e3f6f5;
+	--h1: #272343;
+	--p: #2d334a;
+	--button: #ffd803;
+	--button-text: #272343;
+}
+
+div {
+	color: var(--button-text);
+}
+
+h1 {
+	color: var(--h1);
+}
+
+.glass {
+	backdrop-filter: blur(30px) saturate(80%);
+	background-color: rgba(0, 0, 0, 0.427);
+	border-radius: 20px;
+}
+
+.bg {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100vw;
+	height: 100vh;
+
+	/* background-image: url('./../public/bg3.webp'); */
+	background: rgb(235, 235, 235);
+	background: linear-gradient(
+		62deg,
+		rgba(235, 235, 235, 1) 25%,
+		rgba(155, 238, 251, 1) 100%
+	);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.popup__main {
+	z-index: 1001;
+}
+.popup__bg {
+	position: absolute;
+	inset: 0;
+	z-index: 1000;
+	background-color: rgba(148, 148, 148, 0.426);
+
+	justify-content: center;
+	align-items: center;
+}
+
+.divHideScroll::-webkit-scrollbar {
+	width: 0 !important;
+}
+.divHideScroll {
+	overflow: -moz-scrollbars-none;
+}
+.divHideScroll {
+	-ms-overflow-style: none;
+}

@@ -1,23 +1,95 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System.Data;
+﻿using ChatApp.Data.Entities;
+using ChatApp.Data.Repository.Interfaces;
+using Microsoft.AspNetCore.SignalR;
+using System;
+using static API.Hubs.ChatHub;
 
 namespace API.Hubs
 {
-    public class ChatHub : Hub
+    public interface IChatClient
     {
-        public async Task JoinChat(string chatName, string name)
-        {
-            if (chatName == string.Empty || name == string.Empty)
-                return;
-            await Groups.AddToGroupAsync(Context.ConnectionId, chatName);
+        Task SendChatMessages(string chatName,IEnumerable<Message> messages);
+        Task UpdateChat(string chatName, Message message);
+        Task GetAllChats(List<Chat> chats);
+        Task SendError(string error);
+    }
 
-            await Clients.Group(chatName).SendAsync("ReciveMessage", $"{name} has joined!");
-        }
-        
-        public async Task SendMessage(string chatName, string text)
+    public class ChatHub : Hub<IChatClient>
+    {
+        private readonly IChatRepository _chatRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMessageRepository _messageRepository;
+        private readonly ILogger<ChatHub> _logger;
+
+        public ChatHub(IUserRepository userRepository, IChatRepository chatRepository, ILogger<ChatHub> logger, IMessageRepository messageRepository)
         {
-            Console.WriteLine(text);
-            await Clients.Group(chatName).SendAsync("ReciveMessage", text);
+            _userRepository = userRepository;
+            _chatRepository = chatRepository;
+            _messageRepository = messageRepository;
+            _logger = logger;
+        }
+
+        public async Task Connect(string login)
+        {
+            var user = await _userRepository.GetByLogin(login);
+            await _chatRepository.AddConnectionIdToAllUserChats(user, Context.ConnectionId);
+            var chats = _chatRepository.GetUserChats(user.Id).Result;
+
+            await Clients.Client(Context.ConnectionId).GetAllChats(chats);
+        } 
+        public record JoinChatDTO(string login, string chatName);
+        public async Task JoinChat(JoinChatDTO joinChatDTO)
+        {
+            var chat = await _chatRepository.GetByName(joinChatDTO.chatName);
+
+            if (chat is null)
+            {
+                await Clients.Client(Context.ConnectionId).SendError($"Cannot find chat {joinChatDTO.chatName}");
+                _logger.LogWarning("NotFoundInDatabaseException ");
+                return;
+            }
+
+            var user = await _userRepository.GetByLogin(joinChatDTO.login);
+
+            await _chatRepository.AddUserIdToChat(chat, user.Id);
+            await _chatRepository.AddConnectionIdToChat(chat, Context.ConnectionId);
+
+            var messages = await _messageRepository.GetChatMessages(chat.Id);
+
+            await Clients.Client(Context.ConnectionId).SendChatMessages(chat.Name, messages);
+        }
+
+        public record GetChatMessagesDTO(string chatName);
+        public async Task GetChatMessages(GetChatMessagesDTO getChatMessagesDTO)
+        {
+            var chat = await _chatRepository.GetByName(getChatMessagesDTO.chatName);
+
+            var messages = await _messageRepository.GetChatMessages(chat.Id);
+
+            await Clients.Client(Context.ConnectionId).SendChatMessages(getChatMessagesDTO.chatName, messages);
+        }
+
+        public async Task SendMessage(string authorLogin, string text, string chatName)
+        {
+            if (text.Length == 0)
+                return;
+
+            var user = _userRepository.GetByLogin(authorLogin).Result;
+            var chat = _chatRepository.GetByName(chatName).Result;
+
+            var newMessage = new Message(user.Id, chat.Id, text, user.Login);
+            await _messageRepository.Add(newMessage);
+
+            await Clients.Clients(chat.ConnectionIds).UpdateChat(chatName, newMessage);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            if(Context.ConnectionId != null) 
+            {
+                await _chatRepository.RemoveConnectionIdInAllChats(Context.ConnectionId);
+            }
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
