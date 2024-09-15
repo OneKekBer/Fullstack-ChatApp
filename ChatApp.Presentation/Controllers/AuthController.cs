@@ -8,19 +8,15 @@ namespace API.Controllers
 {
     [ApiController()]
     [Route("api/auth/")]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
         private readonly IAuthService _authService;
         private readonly IChatRepository _chatRepository;
-        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService,IChatRepository chatRepository, IUserRepository userRepository, ILogger<AuthController> logger)
+        public AuthController(IAuthService authService,IChatRepository chatRepository)
         {
-            _userRepository = userRepository;
             _authService = authService;
             _chatRepository = chatRepository;
-            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -34,7 +30,7 @@ namespace API.Controllers
 
             await _authService.RegisterUser(registerData);
 
-            return Ok(new { message = "User created successfully" });
+            return Ok( new { Message = "User created successfully" });
         }
 
         [HttpPost("login")]

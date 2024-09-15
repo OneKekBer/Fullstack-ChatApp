@@ -6,7 +6,7 @@ namespace API.Controllers
 {
     [ApiController()]
     [Route("api/chat")]
-    public class ChatController : Controller
+    public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
         private readonly ILogger<ChatController> _logger;

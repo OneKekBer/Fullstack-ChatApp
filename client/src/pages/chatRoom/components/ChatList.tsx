@@ -20,9 +20,9 @@ const ChatList: React.FC<ChatListProps> = ({
 }) => {
 	const [filter, setFilter] = useState('')
 
-	const filteredChat = chats.filter(chat =>
-		chat.name.toLowerCase().includes(filter.toLowerCase())
-	)
+	// const filteredChat = chats.filter(chat =>
+	// 	chat.name.toLowerCase().includes(filter.toLowerCase())
+	// )
 
 	return (
 		<div className='relative'>
@@ -35,14 +35,14 @@ const ChatList: React.FC<ChatListProps> = ({
 					placeholder='Sort chats'
 					className='text-p'
 				/>
-				<div className='flex mt-4 bottom-0 left-0 gap-5'>
+				<div className='bottom-0 left-0 flex gap-5 mt-4'>
 					<Button
 						className='font-light rounded-full w-[50px] h-[50px]'
 						onClick={toggleCreatePopup}
 						colorScheme='yellow'
 					>
 						<img
-							className='aspect-square object-contain '
+							className='object-contain aspect-square '
 							src={plus}
 							alt=''
 						/>
@@ -54,14 +54,14 @@ const ChatList: React.FC<ChatListProps> = ({
 						colorScheme='yellow'
 					>
 						<img
-							className='aspect-square object-contain '
+							className='object-contain aspect-square '
 							src={loop}
 							alt=''
 						/>
 					</Button>
 				</div>
 				<div className='max-h-[50vh] flex flex-col mt-4 overflow-y-scroll'>
-					{filteredChat.map((chat, i) => {
+					{chats.map((chat, i) => {
 						return (
 							<div
 								onClick={() => {

@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Presentation", "API\ChatApp.Presentation.csproj", "{2A0AB4F8-21DC-4B2C-A30D-CC7AEA056277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Presentation", "ChatApp.Presentation\ChatApp.Presentation.csproj", "{2A0AB4F8-21DC-4B2C-A30D-CC7AEA056277}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ChatApp.Client", "Client\ChatApp.Client.esproj", "{B4CDCA2A-6C79-4B59-9349-28FDBAEA54F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Data", "ChatApp.Data\ChatApp.Data.csproj", "{FD846560-A35C-449D-9557-505348386532}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Business", "ChatApp.Business\ChatApp.Business.csproj", "{1D1EB2AF-2819-4648-94E0-2EA5EF74D244}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0369799A-175B-479A-8E2C-AC172626921C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.UnitTests", "ChatApp.UnitTests\ChatApp.UnitTests.csproj", "{2F0ED199-D2BF-4A3E-A2FB-8896D5857213}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,9 +39,16 @@ Global
 		{1D1EB2AF-2819-4648-94E0-2EA5EF74D244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1EB2AF-2819-4648-94E0-2EA5EF74D244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1EB2AF-2819-4648-94E0-2EA5EF74D244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F0ED199-D2BF-4A3E-A2FB-8896D5857213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F0ED199-D2BF-4A3E-A2FB-8896D5857213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F0ED199-D2BF-4A3E-A2FB-8896D5857213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F0ED199-D2BF-4A3E-A2FB-8896D5857213}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2F0ED199-D2BF-4A3E-A2FB-8896D5857213} = {0369799A-175B-479A-8E2C-AC172626921C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E2804FA-41F9-4A17-BBAD-CAEBE0875421}

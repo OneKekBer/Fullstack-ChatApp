@@ -1,4 +1,4 @@
-using API.Hubs;
+﻿using API.Hubs;
 using API.Middlewares;
 using ChatApp.Business.Services;
 using ChatApp.Business.Services.Interfaces;
@@ -37,6 +37,8 @@ builder.Services.AddCors(options =>
 });
 
 //services
+
+//mockat` создавать тестовые версии своих обхъектво
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
