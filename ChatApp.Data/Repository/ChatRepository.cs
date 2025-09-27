@@ -31,7 +31,8 @@ namespace ChatApp.Data.Repository
 
         public async Task<Chat> GetById(Guid id)
         {
-            var searchingGroup = await _appDatabase.Chats.FirstOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundInDatabaseException($"Cannot find group with id:{id}");
+            var searchingGroup = await _appDatabase.Chats.FirstOrDefaultAsync(x => x.Id == id) 
+                                 ?? throw new NotFoundInDatabaseException($"Cannot find group with id:{id}");
 
             return searchingGroup;
         }

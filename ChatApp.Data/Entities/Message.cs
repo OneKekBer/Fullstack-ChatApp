@@ -14,16 +14,10 @@
         }
 
         public Guid Id { get; init; } = Guid.NewGuid();
-
         public Guid ChatId { get; init; }
-
         public string AuthorLogin { get; init; }
-
         public Guid AuthorId { get; set; }
-
         public string Text { get; set; } = string.Empty;
-
         public DateTime CreatedAt { get; init; }
     }
-
 }

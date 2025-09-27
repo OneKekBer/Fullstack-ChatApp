@@ -5,10 +5,9 @@ namespace ChatApp.Data.Database
 {
     public class AppDatabaseContext : DbContext
     {
+        public AppDatabaseContext() { }
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options)
-            : base(options)
-        { 
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -16,11 +15,8 @@ namespace ChatApp.Data.Database
         }
 
         //ensure create
-
         public DbSet<Chat> Chats { get; set; }
-
         public DbSet<Message> Messages { get; set; }
-
         public DbSet<User> Users { get; set; }
     }
 }

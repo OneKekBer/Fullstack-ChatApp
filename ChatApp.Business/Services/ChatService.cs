@@ -1,5 +1,4 @@
-﻿using ChatApp.Business.Domains.Chat.Models;
-using ChatApp.Business.Services.Interfaces;
+﻿using ChatApp.Business.Services.Interfaces;
 using ChatApp.Data.Entities;
 using ChatApp.Data.Repository.Interfaces;
 
@@ -14,19 +13,17 @@ namespace ChatApp.Business.Services
             _chatRepository = chatRepository;
         }
 
-        public async Task Create(CreateChatDTO createChatDTO)
+        public async Task Create(string title)
         {
-            var chat = new Chat(createChatDTO.Name);
-
-
+            var chat = new Chat(title);
             await _chatRepository.Add(chat);
         }
 
-        public async Task<IEnumerable<Chat>> Find(FindChatDTO findChatDTO)
+        public async Task<IEnumerable<Chat>> Find(string title)
         {
             var chats = await _chatRepository.GetAll();
 
-            var refs = chats.Where((x) => x.Name.Contains(findChatDTO.chatName)).Take(10).ToList();
+            var refs = chats.Where((x) => x.Name.Contains(title)).Take(10).ToList();
 
             return refs;
         }

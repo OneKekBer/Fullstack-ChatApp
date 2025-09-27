@@ -1,5 +1,4 @@
-﻿using ChatApp.Business.Domains.User.Models;
-using ChatApp.Business.Helpers;
+﻿using ChatApp.Business.Helpers;
 using ChatApp.Business.Services.Interfaces;
 using ChatApp.Data.Entities;
 using ChatApp.Data.Repository.Interfaces;
@@ -15,22 +14,22 @@ namespace ChatApp.Business.Services
             _userRepository = UserRepository;
         }
 
-        public async Task<User> LogIn(RegisterDTO registerData)
+        public async Task<User> LogIn(string login, string password)
         {
-            var user = await _userRepository.GetByLogin(registerData.Login);
+            var user = await _userRepository.GetByLogin(login);
 
-            if (!HashHelper.IsPasswordHashesEquals(user.PasswordHash, registerData.Password))
+            if (!HashHelper.IsPasswordHashesEquals(user.PasswordHash, password))
                 throw new Exception();
 
             return user;
         }
 
-        public async Task<User> RegisterUser(RegisterDTO registerData)
+        public async Task<User> RegisterUser(string login, string password)
         {
-            if (await _userRepository.IsLoginExists(registerData.Login))
+            if (await _userRepository.IsLoginExists(login))
                 throw new Exception();
 
-            var createdUser = new User(registerData.Login, HashHelper.ConvertPasswordToHash(registerData.Password));
+            var createdUser = new User(login, HashHelper.ConvertPasswordToHash(password));
             await _userRepository.Add(createdUser);
             return createdUser;
         }
