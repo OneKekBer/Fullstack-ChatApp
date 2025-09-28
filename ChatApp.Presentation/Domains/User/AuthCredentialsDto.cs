@@ -1,4 +1,4 @@
-﻿namespace ChatApp.Presentation.Domains.User.Models
+﻿namespace ChatApp.Presentation.Domains.User
 {
     public record AuthCredentialsDto(string Login, string Password);
 }

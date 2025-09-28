@@ -7,11 +7,11 @@ namespace ChatApp.Business.Services
 {
     public class AuthService : IAuthService
     {
-        private IUserRepository _userRepository { get; init; }
+        private readonly IUserRepository _userRepository;
 
-        public AuthService(IUserRepository UserRepository)
+        public AuthService(IUserRepository userRepository)
         {
-            _userRepository = UserRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<User> LogIn(string login, string password)

@@ -1,6 +1,6 @@
 ﻿using ChatApp.Business.Services.Interfaces;
 using ChatApp.Data.Repository.Interfaces;
-using ChatApp.Presentation.Domains.User.Models;
+using ChatApp.Presentation.Domains.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatApp.Presentation.Controllers

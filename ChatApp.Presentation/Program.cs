@@ -1,8 +1,10 @@
 using ChatApp.Business.Services;
 using ChatApp.Business.Services.Interfaces;
 using ChatApp.Data.Database;
+using ChatApp.Data.Interfaces;
 using ChatApp.Data.Repository;
 using ChatApp.Data.Repository.Interfaces;
+using ChatApp.Infrastructure.Utils;
 using ChatApp.Presentation.Hubs;
 using ChatApp.Presentation.Middlewares;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +20,6 @@ builder.Services.AddDbContext<AppDatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("LocalDatabase"), options => 
         options.MigrationsAssembly("ChatApp.Data")
     ));
-
-//invoke migrations
-//testy!!!!!!
-//design!!!
-
 
 //cors
 builder.Services.AddCors(options =>
@@ -42,14 +39,21 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
+builder.Services.AddScoped<IImageCompressor, ImageCompressor>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ChatHubService, ChatHubService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

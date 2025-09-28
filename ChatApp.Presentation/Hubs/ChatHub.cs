@@ -5,15 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.Presentation.Hubs
 {
-    public interface IChatClient
-    {
-        Task SendChatMessages(string chatName,IEnumerable<Message> messages);
-        Task UpdateChat(string chatName, Message message);
-        Task GetAllChats(List<Chat> chats);
-        Task SendError(string error);
-    }
-
-    public partial class ChatHub : Hub<IChatClient>
+    public class ChatHub : Hub<IChatClient>
     {
         private readonly IChatRepository _chatRepository;
         private readonly IUserRepository _userRepository;
@@ -32,7 +24,7 @@ namespace ChatApp.Presentation.Hubs
         {
             var user = await _userRepository.GetByLogin(login);
             await _chatRepository.AddConnectionIdToAllUserChats(user, Context.ConnectionId);
-            var chats = _chatRepository.GetUserChats(user.Id).Result;
+            var chats = await _chatRepository.GetUserChats(user.Id);
 
             await Clients.Client(Context.ConnectionId).GetAllChats(chats);
         }
@@ -72,13 +64,18 @@ namespace ChatApp.Presentation.Hubs
             if (dto.Message.Length == 0)
                 return;
 
-            var user = _userRepository.GetByLogin(dto.AuthorLogin).Result;
-            var chat = _chatRepository.GetByName(dto.ChatName).Result;
+            var user = await _userRepository.GetByLogin(dto.AuthorLogin);
+            var chat = await _chatRepository.GetByName(dto.ChatName);
 
             var newMessage = new Message(user.Id, chat.Id, dto.Message, user.Login);
             await _messageRepository.Add(newMessage);
 
             await Clients.Clients(chat.ConnectionIds).UpdateChat(dto.ChatName, newMessage);
+        }
+
+        public async Task SendFile(SendFileDto dto)
+        {
+            
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
